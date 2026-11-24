@@ -165,7 +165,7 @@ export const CatadorView: React.FC = () => {
             })}
           </div>
           {categoria === 'Cobre/Fios' && (
-            <p className="mt-2 flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900 border border-amber-200">
+            <p className="mt-2 flex items-center gap-1.5 rounded-xl bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-100 dark:border-amber-800">
               <FlameKindling className="h-4 w-4 text-amber-600 shrink-0" />
               Recebimento direto sem queima de plástico: preserva a saúde do catador e evita gases tóxicos.
             </p>
@@ -240,8 +240,8 @@ export const CatadorView: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className={`rounded-2xl border p-3.5 text-xs font-semibold ${
               resultado.ok
-                ? 'border-emerald-300 bg-emerald-50 text-emerald-900'
-                : 'border-rose-300 bg-rose-50 text-rose-900'
+                ? 'border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100'
+                : 'border-rose-300 bg-rose-50 text-rose-900 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-100'
             }`}
           >
             {resultado.mensagem}
@@ -251,7 +251,7 @@ export const CatadorView: React.FC = () => {
         <button
           type="submit"
           disabled={enviando}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3.5 text-sm font-extrabold text-white shadow-md hover:bg-emerald-700 active:scale-[0.99] transition disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-circula-lime py-3.5 text-sm font-extrabold text-circula-dark shadow-md hover:bg-[#7da01f] active:scale-[0.99] transition disabled:opacity-60"
         >
           <ShieldCheck className="h-5 w-5" />
           {enviando ? 'Validando...' : 'Validar Entrega e Liberar Pontos'}

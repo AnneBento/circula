@@ -18,7 +18,7 @@ function ThemeToggle() {
       type="button"
       onClick={() => setEscuro((v) => !v)}
       aria-label={escuro ? 'Ativar tema claro' : 'Ativar tema escuro'}
-      className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-xs transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+      className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-xs transition hover:bg-slate-50 dark:border-circula-olive/30 dark:bg-[#0b1a10] dark:text-circula-sage dark:hover:bg-circula-dark"
     >
       {escuro ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
     </button>
@@ -37,19 +37,19 @@ function RootLayout() {
 
   return (
     <CirculaProvider>
-      <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0b1a10] dark:text-slate-100">
         {/* Top App Bar */}
-        <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90">
+        <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-circula-olive/20 dark:bg-[#123f1b]/90">
           <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
             <Link to="/" className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-circula-lime text-circula-dark shadow-xs">
                 <Recycle className="h-5 w-5" />
               </div>
               <div>
-                <span className="block text-base font-black tracking-tight text-slate-900 dark:text-slate-100">
+                <span className="block text-base font-black tracking-tight text-circula-dark dark:text-white">
                   CIRCULA
                 </span>
-                <span className="block text-[10px] font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                <span className="block text-[10px] font-semibold uppercase tracking-wider text-circula-olive dark:text-circula-sage">
                   A transformação começa por você!
                 </span>
               </div>
@@ -65,7 +65,7 @@ function RootLayout() {
         </main>
 
         {/* Bottom Navigation Bar (Mobile PWA) */}
-        <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-slate-200 bg-white/95 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95">
+        <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-slate-200 bg-white/95 backdrop-blur-md dark:border-circula-olive/20 dark:bg-[#123f1b]/95">
           <div className="mx-auto grid max-w-3xl grid-cols-4 px-2 py-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -76,11 +76,11 @@ function RootLayout() {
                   to={item.to}
                   className={`flex flex-col items-center justify-center gap-1 rounded-xl py-1.5 text-[11px] font-bold transition ${
                     active
-                      ? 'text-emerald-700 bg-emerald-50/80 dark:text-emerald-400 dark:bg-emerald-950/60'
-                      : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
+                      ? 'text-circula-dark bg-circula-sage/30 dark:text-circula-lime dark:bg-circula-lime/10'
+                      : 'text-slate-500 hover:text-slate-800 dark:text-circula-sage/70 dark:hover:text-white'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${active ? 'text-emerald-600' : ''}`} />
+                  <Icon className={`h-5 w-5 ${active ? 'text-circula-lime' : ''}`} />
                   {item.label}
                 </Link>
               );

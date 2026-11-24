@@ -59,7 +59,7 @@ export const CidadaoView: React.FC = () => {
               onClick={() => selecionarCidadao(c.codigo_entrega)}
               className={`rounded-xl px-2.5 py-1 text-xs font-semibold transition ${
                 c.codigo_entrega === cidadaoAtivo.codigo_entrega
-                  ? 'bg-emerald-600 text-white shadow-xs'
+                  ? 'bg-circula-lime text-circula-dark shadow-xs'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
               }`}
             >
@@ -100,7 +100,7 @@ export const CidadaoView: React.FC = () => {
           </div>
           <button
             onClick={copiarCodigo}
-            className="flex items-center gap-1.5 rounded-xl bg-white dark:bg-slate-900 px-3 py-2 text-xs font-bold text-emerald-900 shadow-xs active:scale-95 transition"
+            className="flex items-center gap-1.5 rounded-xl bg-white dark:bg-slate-900 px-3 py-2 text-xs font-bold text-emerald-900 dark:text-emerald-100 shadow-xs active:scale-95 transition"
           >
             {copiado ? (
               <>
@@ -162,8 +162,8 @@ export const CidadaoView: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             className={`rounded-2xl border p-3.5 text-xs font-semibold ${
               feedbackVoucher.ok
-                ? 'border-emerald-300 bg-emerald-50 text-emerald-900'
-                : 'border-amber-300 bg-amber-50 text-amber-900'
+                ? 'border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100'
+                : 'border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100'
             }`}
           >
             {feedbackVoucher.mensagem}
@@ -206,9 +206,9 @@ export const CidadaoView: React.FC = () => {
                     onClick={() => handleResgatar(voucher.id)}
                     className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition ${
                       jaResgatado
-                        ? 'bg-emerald-100 text-emerald-800'
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-100'
                         : desbloqueado
-                        ? 'bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95'
+                        ? 'bg-circula-lime text-circula-dark hover:bg-[#7da01f] active:scale-95'
                         : 'bg-slate-200 text-slate-500 dark:text-slate-400 cursor-not-allowed'
                     }`}
                   >

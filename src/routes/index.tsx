@@ -61,11 +61,11 @@ const NIVEIS_INFO: Record<
   NivelJornada,
   { nome: string; cor: string; icon: React.ElementType }
 > = {
-  1: { nome: 'Nível 1 • Semente', cor: 'bg-emerald-100 text-emerald-800', icon: Sprout },
-  2: { nome: 'Nível 2 • Broto', cor: 'bg-teal-100 text-teal-800', icon: Leaf },
-  3: { nome: 'Nível 3 • Árvore', cor: 'bg-sky-100 text-sky-800', icon: TreePine },
-  4: { nome: 'Nível 4 • Guardião', cor: 'bg-indigo-100 text-indigo-800', icon: ShieldCheck },
-  5: { nome: 'Nível 5 • Embaixador', cor: 'bg-amber-100 text-amber-900', icon: Award },
+  1: { nome: 'Nível 1 • Semente', cor: 'bg-circula-sage/40 text-circula-dark dark:bg-circula-lime/15 dark:text-circula-sage', icon: Sprout },
+  2: { nome: 'Nível 2 • Broto', cor: 'bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-100', icon: Leaf },
+  3: { nome: 'Nível 3 • Árvore', cor: 'bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-100', icon: TreePine },
+  4: { nome: 'Nível 4 • Guardião', cor: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-100', icon: ShieldCheck },
+  5: { nome: 'Nível 5 • Embaixador', cor: 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100', icon: Award },
 };
 
 const CUPONS_CARROSSEL: CupomCarrossel[] = [
@@ -468,7 +468,7 @@ const LinhaCarrossel: React.FC<LinhaCarrosselProps> = ({
 
               {/* Base do Bloquinho */}
               <div className="flex flex-1 flex-col justify-between p-3 pt-1.5">
-                <p className="text-[11px] font-bold text-slate-800 truncate">
+                <p className="text-[11px] font-bold text-slate-800 dark:text-slate-100 truncate">
                   {cupom.parceiro}
                 </p>
 
@@ -505,7 +505,7 @@ function HomeLanding() {
       titulo: 'Sou Cidadão',
       subtitulo: 'Código de entrega, Níveis de Confiança, Ecopontos e resgate de cupons.',
       icon: User,
-      cor: 'bg-emerald-600 text-white',
+      cor: 'bg-circula-lime text-circula-dark',
     },
     {
       to: '/catador',
@@ -559,7 +559,7 @@ function HomeLanding() {
           </div>
           <Link
             to="/cidadao"
-            className="rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-extrabold text-white shadow-xs hover:bg-emerald-700 transition"
+            className="rounded-xl bg-circula-lime px-3.5 py-2 text-xs font-extrabold text-circula-dark shadow-xs hover:bg-[#7da01f] transition"
           >
             Minha Carteira
           </Link>
@@ -596,9 +596,9 @@ function HomeLanding() {
         />
 
         {/* Rodapé Informativo */}
-        <div className="flex items-center justify-between rounded-2xl bg-emerald-50/80 px-3.5 py-2.5 border border-emerald-200/70">
-          <div className="flex items-center gap-2 text-xs text-emerald-900">
-            <Gift className="h-4 w-4 text-emerald-600 shrink-0" />
+        <div className="flex items-center justify-between rounded-2xl bg-emerald-50/80 px-3.5 py-2.5 border border-emerald-200/70 dark:bg-circula-lime/10 dark:border-circula-lime/30">
+          <div className="flex items-center gap-2 text-xs text-emerald-900 dark:text-circula-sage">
+            <Gift className="h-4 w-4 text-emerald-600 dark:text-circula-lime shrink-0" />
             <span>
               Toque em qualquer bloquinho para conferir as regras e o nível necessário.
             </span>
@@ -660,7 +660,7 @@ function HomeLanding() {
                     <span className="block text-[10px] font-bold uppercase text-slate-400">
                       Requisito da Jornada
                     </span>
-                    <span className="text-xs font-extrabold text-slate-800">
+                    <span className="text-xs font-extrabold text-slate-800 dark:text-slate-100">
                       {NIVEIS_INFO[cupomSelecionado.nivel].nome}
                     </span>
                   </div>
@@ -677,7 +677,7 @@ function HomeLanding() {
                 <Link
                   to="/cidadao"
                   onClick={() => setCupomSelecionado(null)}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3 text-sm font-extrabold text-white hover:bg-emerald-700 transition"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-circula-lime py-3 text-sm font-extrabold text-circula-dark hover:bg-[#7da01f] transition"
                 >
                   <Ticket className="h-4 w-4" />
                   Ir para Carteira e Resgatar

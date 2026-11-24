@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-circula-dark: #123f1b;
+  --color-circula-lime: #90ad2e;
+  --color-circula-sage: #bdd3a7;
+  --color-circula-olive: #8d9864;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #f8fafc;
@@ -10,6 +17,6 @@ body {
 }
 
 .dark body {
-  background-color: #020617;
-  color: #e2e8f0;
+  background-color: #0b1a10;
+  color: #f1f5f9;
 }

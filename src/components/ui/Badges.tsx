@@ -13,33 +13,38 @@ const NIVEIS_BADGE: Record<
 > = {
   1: {
     label: 'Nível 1 • Semente',
-    classes: 'bg-emerald-100 text-emerald-900 border-emerald-300',
+    classes:
+      'bg-circula-sage/40 text-circula-dark border-circula-olive/40 dark:bg-circula-lime/15 dark:text-circula-sage dark:border-circula-lime/30',
     icon: Sprout,
-    iconClasses: 'text-emerald-600',
+    iconClasses: 'text-circula-lime',
   },
   2: {
     label: 'Nível 2 • Broto',
-    classes: 'bg-teal-100 text-teal-900 border-teal-300',
+    classes:
+      'bg-teal-100 text-teal-900 border-teal-300 dark:bg-teal-900/40 dark:text-teal-100 dark:border-teal-700',
     icon: Leaf,
-    iconClasses: 'text-teal-600',
+    iconClasses: 'text-teal-600 dark:text-teal-300',
   },
   3: {
     label: 'Nível 3 • Árvore',
-    classes: 'bg-sky-100 text-sky-900 border-sky-300',
+    classes:
+      'bg-sky-100 text-sky-900 border-sky-300 dark:bg-sky-900/40 dark:text-sky-100 dark:border-sky-700',
     icon: TreePine,
-    iconClasses: 'text-sky-600',
+    iconClasses: 'text-sky-600 dark:text-sky-300',
   },
   4: {
     label: 'Nível 4 • Guardião',
-    classes: 'bg-indigo-100 text-indigo-900 border-indigo-300',
+    classes:
+      'bg-indigo-100 text-indigo-900 border-indigo-300 dark:bg-indigo-900/40 dark:text-indigo-100 dark:border-indigo-700',
     icon: ShieldCheck,
-    iconClasses: 'text-indigo-600',
+    iconClasses: 'text-indigo-600 dark:text-indigo-300',
   },
   5: {
     label: 'Nível 5 • Embaixador',
-    classes: 'bg-amber-100 text-amber-900 border-amber-300',
+    classes:
+      'bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-900/40 dark:text-amber-100 dark:border-amber-700',
     icon: Award,
-    iconClasses: 'text-amber-600',
+    iconClasses: 'text-amber-600 dark:text-amber-300',
   },
 };
 
