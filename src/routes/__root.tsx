@@ -1,7 +1,7 @@
 import { createRootRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
-import { Home, Landmark, Moon, Recycle, Scale, Sun, User } from 'lucide-react';
+import { AlertTriangle, Home, Landmark, Moon, Recycle, Scale, Sun, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { CirculaProvider } from '../lib/circulaStore';
+import { CirculaProvider, useCircula } from '../lib/circulaStore';
 
 function ThemeToggle() {
   const [escuro, setEscuro] = useState(
@@ -22,6 +22,17 @@ function ThemeToggle() {
     >
       {escuro ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
     </button>
+  );
+}
+
+function AvisoSupabaseBanner() {
+  const { avisoSupabase } = useCircula();
+  if (!avisoSupabase) return null;
+  return (
+    <div className="mb-4 flex items-start gap-2 rounded-2xl border border-amber-300 bg-amber-50 p-3 text-xs font-semibold text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
+      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+      <span>{avisoSupabase}</span>
+    </div>
   );
 }
 
@@ -61,6 +72,7 @@ function RootLayout() {
 
         {/* Conteúdo Principal */}
         <main className="mx-auto max-w-3xl px-4 pt-5">
+          <AvisoSupabaseBanner />
           <Outlet />
         </main>
 

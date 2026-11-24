@@ -44,7 +44,6 @@ export const CidadaoView: React.FC = () => {
   const handleResgatar = async (id: string) => {
     const res = await resgatarVoucher(id);
     setFeedbackVoucher(res);
-    setTimeout(() => setFeedbackVoucher(null), 4000);
   };
 
   return (

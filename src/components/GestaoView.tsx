@@ -20,7 +20,7 @@ export const GestaoView: React.FC = () => {
   const [endereco, setEndereco] = useState('');
   const [horario, setHorario] = useState('Seg a Sáb • 07h às 17h');
   const [capacidade, setCapacidade] = useState('500');
-  const [criadoSucesso, setCriadoSucesso] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<{ ok: boolean; mensagem: string } | null>(null);
 
   const totalKgDesviado = depositos.reduce((acc, d) => acc + d.peso_kg, 0);
   const economiaPppTotal = depositos.reduce((acc, d) => acc + d.economia_ppp_brl, 0);
@@ -34,7 +34,7 @@ export const GestaoView: React.FC = () => {
     e.preventDefault();
     if (!nome.trim() || !bairro.trim() || !endereco.trim()) return;
 
-    const novo = await cadastrarEcoponto({
+    const res = await cadastrarEcoponto({
       nome: nome.trim(),
       bairro: bairro.trim(),
       endereco: endereco.trim(),
@@ -42,13 +42,18 @@ export const GestaoView: React.FC = () => {
       capacidadeMaximaKg: Number(capacidade) || 500,
     });
 
-    setCriadoSucesso(
-      `${novo.codigo} (${novo.nome}) publicado instantaneamente na visão do Cidadão e do Catador!`
-    );
+    if (!res.ok || !res.ecoponto) {
+      setFeedback({ ok: false, mensagem: res.mensagem });
+      return;
+    }
+
+    setFeedback({
+      ok: true,
+      mensagem: `${res.ecoponto.codigo} (${res.ecoponto.nome}) publicado instantaneamente na visão do Cidadão e do Catador!`,
+    });
     setNome('');
     setBairro('');
     setEndereco('');
-    setTimeout(() => setCriadoSucesso(null), 5000);
   };
 
   return (
@@ -177,13 +182,17 @@ export const GestaoView: React.FC = () => {
           </div>
         </div>
 
-        {criadoSucesso && (
+        {feedback && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="rounded-2xl border border-emerald-300 bg-emerald-50 p-3 text-xs font-semibold text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100"
+            className={`rounded-2xl border p-3 text-xs font-semibold ${
+              feedback.ok
+                ? 'border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100'
+                : 'border-rose-300 bg-rose-50 text-rose-900 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-100'
+            }`}
           >
-            {criadoSucesso}
+            {feedback.mensagem}
           </motion.div>
         )}
 
