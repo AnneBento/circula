@@ -1,4 +1,4 @@
-# ♻️ CIRCULA
+# CIRCULA
 
 > *"O que circula transforma."*
 
@@ -15,7 +15,11 @@
 
 ---
 
+<<<<<<< HEAD
 ##  O Problema e Nossa Solução
+=======
+## O Problema e Nossa Solução
+>>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
 
 Com a transição do antigo lixão de Quixadá para a nova usina de processamento via Parceria Público-Privada (PPP), o município enfrenta um triplo desafio **social, ambiental e financeiro**:
 
@@ -26,6 +30,7 @@ Com a transição do antigo lixão de Quixadá para a nova usina de processament
 ### Como o CIRCULA Resolve
 O **CIRCULA** intercepta os materiais recicláveis antes que sejam descartados no lixo comum, reorganizando a cadeia em três frentes conectadas:
 
+<<<<<<< HEAD
 * ** Ecopontos Centralizados (Gestão AMMA / CONSERCE):** Pontos estratégicos distribuídos pelos bairros de Quixadá, cadastrados e divulgados em tempo real pela administração pública.
 * ** Níveis de Confiança & Vouchers (Engajamento Cidadão):** Cidadãos que entregam materiais limpos e separados nos Ecopontos acumulam pontos e sobem de **Nível de Confiança**, desbloqueando vouchers e descontos em parceiros de **educação, entretenimento e comércio local**.
 * ** Validação Presencial pelo Catador (Dignidade e Renda):** O catador vinculado ao Ecoponto inspeciona a qualidade do material (garantindo que não haja contaminação orgânica) e registra o peso no aplicativo. Ele recebe matéria-prima limpa e de alto valor (como cobre e eletrônicos) sem precisar queimar plástico, sem depender de atravessadores e gerando histórico auditável de produtividade para políticas públicas.
@@ -33,6 +38,15 @@ O **CIRCULA** intercepta os materiais recicláveis antes que sejam descartados n
 ---
 
 ##  Módulos da Aplicação (Mobile PWA)
+=======
+* **Ecopontos Centralizados (Gestão AMMA / CONSERCE):** Pontos estratégicos distribuídos pelos bairros de Quixadá, cadastrados e divulgados em tempo real pela administração pública.
+* **Níveis de Confiança & Vouchers (Engajamento Cidadão):** Cidadãos que entregam materiais limpos e separados nos Ecopontos acumulam pontos e sobem de **Nível de Confiança**, desbloqueando vouchers e descontos em parceiros de **educação, entretenimento e comércio local**.
+* **Validação Presencial pelo Catador (Dignidade e Renda):** O catador vinculado ao Ecoponto inspeciona a qualidade do material (garantindo que não haja contaminação orgânica) e registra o peso no aplicativo. Ele recebe matéria-prima limpa e de alto valor (como cobre e eletrônicos) sem precisar queimar plástico, sem depender de atravessadores e gerando histórico auditável de produtividade para políticas públicas.
+
+---
+
+## Módulos da Aplicação (Mobile PWA)
+>>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
 
 A aplicação foi projetada com foco *mobile-first* e experiência fluida de aplicativo nativo:
 
@@ -51,7 +65,11 @@ A aplicação foi projetada com foco *mobile-first* e experiência fluida de apl
 
 ---
 
+<<<<<<< HEAD
 ##  Stack Tecnológica
+=======
+## Stack Tecnológica
+>>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
 
 * **Frontend:** [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vite.dev/) (configurado como Mobile PWA instalável).
 * **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/) (`@tailwindcss/vite`) com design system responsivo e de alto contraste para uso em campo.
@@ -61,10 +79,14 @@ A aplicação foi projetada com foco *mobile-first* e experiência fluida de apl
 
 ---
 
+<<<<<<< HEAD
 ##  Estrutura do Projeto
+=======
+## Estrutura do Projeto
+>>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
 
 ```text
-circula-pwa/
+circula/
 ├── public/
 │   ├── manifest.webmanifest      # Configurações de instalação PWA (ícones, tema, display standalone)
 │   └── sw.js                     # Service Worker para cache de ativos essenciais
@@ -93,7 +115,11 @@ circula-pwa/
 
 ---
 
+<<<<<<< HEAD
 ##  Como Executar Localmente
+=======
+## Como Executar Localmente
+>>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
 
 ### Pré-requisitos
 * Node.js 20+ instalado
@@ -103,8 +129,8 @@ circula-pwa/
 
 1. **Clone o repositório e instale as dependências:**
    ```bash
-   git clone https://github.com/seu-usuario/circula-quixada.git
-   cd circula-quixada
+   git clone https://github.com/AnneBento/circula
+   cd circula
    npm install
    ```
 
@@ -126,7 +152,7 @@ circula-pwa/
 
 ---
 
-## 📋 Conformidade com o Edital (Hackathon Estação Tecnológica 2026)
+## Conformidade com o Edital (Hackathon Estação Tecnológica 2026)
 
 * **Proteção de Dados (LGPD - Lei nº 13.709/2018):** Em estrita observância ao item 8.4 do Edital, este protótipo utiliza exclusivamente dados sintéticos e fictícios para demonstração, sem coleta ou exposição de dados pessoais reais de cidadãos.
 * **Transparência Tecnológica e IA (Item 8.2):** Todo o código-fonte foi concebido e desenvolvido durante o período oficial do evento utilizando bibliotecas open-source listadas na seção de Stack Tecnológica e apoio de ferramentas de Inteligência Artificial Generativa para estruturação inicial de componentes, modelagem de dados e revisão documental.
@@ -134,7 +160,8 @@ circula-pwa/
 
 ---
 
-## 👥 Equipe CIRCULA
+## Equipe CIRCULA
+- Josias Batista
 
 Desenvolvido para transformar a gestão de resíduos sólidos e valorizar quem faz a reciclagem acontecer em Quixadá e no Sertão Central.
 
