@@ -15,7 +15,7 @@
 
 ---
 
-## 🎯 O Problema e Nossa Solução
+##  O Problema e Nossa Solução
 
 Com a transição do antigo lixão de Quixadá para a nova usina de processamento via Parceria Público-Privada (PPP), o município enfrenta um triplo desafio **social, ambiental e financeiro**:
 
@@ -26,13 +26,13 @@ Com a transição do antigo lixão de Quixadá para a nova usina de processament
 ### Como o CIRCULA Resolve
 O **CIRCULA** intercepta os materiais recicláveis antes que sejam descartados no lixo comum, reorganizando a cadeia em três frentes conectadas:
 
-* **📍 Ecopontos Centralizados (Gestão AMMA / CONSERCE):** Pontos estratégicos distribuídos pelos bairros de Quixadá, cadastrados e divulgados em tempo real pela administração pública.
-* **🛡️ Níveis de Confiança & Vouchers (Engajamento Cidadão):** Cidadãos que entregam materiais limpos e separados nos Ecopontos acumulam pontos e sobem de **Nível de Confiança**, desbloqueando vouchers e descontos em parceiros de **educação, entretenimento e comércio local**.
-* **⚖️ Validação Presencial pelo Catador (Dignidade e Renda):** O catador vinculado ao Ecoponto inspeciona a qualidade do material (garantindo que não haja contaminação orgânica) e registra o peso no aplicativo. Ele recebe matéria-prima limpa e de alto valor (como cobre e eletrônicos) sem precisar queimar plástico, sem depender de atravessadores e gerando histórico auditável de produtividade para políticas públicas.
+* ** Ecopontos Centralizados (Gestão AMMA / CONSERCE):** Pontos estratégicos distribuídos pelos bairros de Quixadá, cadastrados e divulgados em tempo real pela administração pública.
+* ** Níveis de Confiança & Vouchers (Engajamento Cidadão):** Cidadãos que entregam materiais limpos e separados nos Ecopontos acumulam pontos e sobem de **Nível de Confiança**, desbloqueando vouchers e descontos em parceiros de **educação, entretenimento e comércio local**.
+* ** Validação Presencial pelo Catador (Dignidade e Renda):** O catador vinculado ao Ecoponto inspeciona a qualidade do material (garantindo que não haja contaminação orgânica) e registra o peso no aplicativo. Ele recebe matéria-prima limpa e de alto valor (como cobre e eletrônicos) sem precisar queimar plástico, sem depender de atravessadores e gerando histórico auditável de produtividade para políticas públicas.
 
 ---
 
-## 📱 Módulos da Aplicação (Mobile PWA)
+##  Módulos da Aplicação (Mobile PWA)
 
 A aplicação foi projetada com foco *mobile-first* e experiência fluida de aplicativo nativo:
 
@@ -51,7 +51,7 @@ A aplicação foi projetada com foco *mobile-first* e experiência fluida de apl
 
 ---
 
-## 🛠️ Stack Tecnológica
+##  Stack Tecnológica
 
 * **Frontend:** [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vite.dev/) (configurado como Mobile PWA instalável).
 * **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/) (`@tailwindcss/vite`) com design system responsivo e de alto contraste para uso em campo.
@@ -61,7 +61,7 @@ A aplicação foi projetada com foco *mobile-first* e experiência fluida de apl
 
 ---
 
-## 📂 Estrutura do Projeto
+##  Estrutura do Projeto
 
 ```text
 circula-pwa/
@@ -93,7 +93,7 @@ circula-pwa/
 
 ---
 
-## 🚀 Como Executar Localmente
+##  Como Executar Localmente
 
 ### Pré-requisitos
 * Node.js 20+ instalado
