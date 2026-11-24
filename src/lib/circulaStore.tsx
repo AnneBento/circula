@@ -4,6 +4,7 @@ import {
   Deposito,
   Ecoponto,
   MaterialCategoria,
+  ResgateVoucher,
   TABELA_MATERIAIS,
   Voucher,
   calcularNivel,
@@ -186,7 +187,7 @@ interface CirculaContextType {
   depositos: Deposito[];
   vouchers: Voucher[];
   vouchersResgatados: string[];
-  resgatarVoucher: (voucherId: string) => { ok: boolean; mensagem: string };
+  resgatarVoucher: (voucherId: string) => Promise<{ ok: boolean; mensagem: string }>;
   registrarEntrega: (input: RegistrarEntregaInput) => Promise<{
     ok: boolean;
     mensagem: string;
@@ -204,24 +205,26 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [codigoAtivo, setCodigoAtivo] = useState<string>('QXD-2026');
   const [depositos, setDepositos] = useState<Deposito[]>(INITIAL_DEPOSITOS);
   const [vouchers, setVouchers] = useState<Voucher[]>(INITIAL_VOUCHERS);
-  const [vouchersResgatados, setVouchersResgatados] = useState<string[]>([]);
+  const [resgates, setResgates] = useState<ResgateVoucher[]>([]);
 
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
     const client = supabase;
 
     const carregarDados = async () => {
-      const [ecoRes, cidRes, depRes, vouRes] = await Promise.all([
+      const [ecoRes, cidRes, depRes, vouRes, resRes] = await Promise.all([
         client.from('ecopontos').select('*').order('codigo'),
         client.from('cidadaos').select('*'),
         client.from('depositos').select('*').order('created_at', { ascending: false }).limit(20),
         client.from('vouchers').select('*').eq('ativo', true),
+        client.from('resgates_vouchers').select('*'),
       ]);
 
       if (ecoRes.data?.length) setEcopontos(ecoRes.data as Ecoponto[]);
       if (cidRes.data?.length) setCidadaos(cidRes.data as Cidadao[]);
       if (depRes.data?.length) setDepositos(depRes.data as Deposito[]);
       if (vouRes.data?.length) setVouchers(vouRes.data as Voucher[]);
+      if (resRes.data) setResgates(resRes.data as ResgateVoucher[]);
     };
 
     carregarDados();
@@ -237,6 +240,9 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'depositos' }, () => {
         carregarDados();
       })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'resgates_vouchers' }, () => {
+        carregarDados();
+      })
       .subscribe();
 
     return () => {
@@ -247,11 +253,15 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const cidadaoAtivo =
     cidadaos.find((c) => c.codigo_entrega === codigoAtivo) || cidadaos[0];
 
+  const vouchersResgatados = resgates
+    .filter((r) => r.cidadao_id === cidadaoAtivo?.id)
+    .map((r) => r.voucher_id);
+
   const selecionarCidadao = (codigo: string) => {
     setCodigoAtivo(codigo);
   };
 
-  const resgatarVoucher = (voucherId: string) => {
+  const resgatarVoucher = async (voucherId: string) => {
     const voucher = vouchers.find((v) => v.id === voucherId);
     if (!voucher) return { ok: false, mensagem: 'Voucher não encontrado.' };
     if (vouchersResgatados.includes(voucherId)) {
@@ -270,14 +280,40 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
       };
     }
 
+    const novosPontos = cidadaoAtivo.pontos - voucher.custo_pontos;
+    const resgateLocal: ResgateVoucher = {
+      id: `res-${Date.now()}`,
+      cidadao_id: cidadaoAtivo.id,
+      voucher_id: voucherId,
+      custo_pontos: voucher.custo_pontos,
+      created_at: new Date().toISOString(),
+    };
+
     setCidadaos((prev) =>
-      prev.map((c) =>
-        c.id === cidadaoAtivo.id
-          ? { ...c, pontos: c.pontos - voucher.custo_pontos }
-          : c
-      )
+      prev.map((c) => (c.id === cidadaoAtivo.id ? { ...c, pontos: novosPontos } : c))
     );
-    setVouchersResgatados((prev) => [...prev, voucherId]);
+    setResgates((prev) => [...prev, resgateLocal]);
+
+    if (isSupabaseConfigured && supabase) {
+      const { error: resgateError } = await supabase.from('resgates_vouchers').insert({
+        cidadao_id: cidadaoAtivo.id,
+        voucher_id: voucherId,
+        custo_pontos: voucher.custo_pontos,
+      });
+
+      if (resgateError) {
+        setCidadaos((prev) =>
+          prev.map((c) => (c.id === cidadaoAtivo.id ? { ...c, pontos: cidadaoAtivo.pontos } : c))
+        );
+        setResgates((prev) => prev.filter((r) => r.id !== resgateLocal.id));
+        return { ok: false, mensagem: 'Não foi possível salvar o resgate. Tente novamente.' };
+      }
+
+      await supabase
+        .from('cidadaos')
+        .update({ pontos: novosPontos })
+        .eq('id', cidadaoAtivo.id);
+    }
 
     return {
       ok: true,
@@ -323,6 +359,13 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const novosPontos = cidadao.pontos + pontosGerados;
     const novoNivel = calcularNivel(novosPontos);
     const novoTotalKg = Number((cidadao.total_kg_entregue + pesoKg).toFixed(2));
+    const ecopontoAlvo = ecopontos.find((e) => e.id === ecopontoId);
+    const novaCapacidade = ecopontoAlvo
+      ? Math.min(
+          ecopontoAlvo.capacidade_maxima_kg,
+          Number((ecopontoAlvo.capacidade_atual_kg + pesoKg).toFixed(2))
+        )
+      : null;
 
     if (isSupabaseConfigured && supabase) {
       await supabase.from('depositos').insert({
@@ -345,6 +388,13 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
           total_kg_entregue: novoTotalKg,
         })
         .eq('id', cidadao.id);
+
+      if (novaCapacidade !== null) {
+        await supabase
+          .from('ecopontos')
+          .update({ capacidade_atual_kg: novaCapacidade })
+          .eq('id', ecopontoId);
+      }
     }
 
     setDepositos((prev) => [novoDeposito, ...prev]);
@@ -362,14 +412,8 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
     setEcopontos((prev) =>
       prev.map((e) =>
-        e.id === ecopontoId
-          ? {
-              ...e,
-              capacidade_atual_kg: Math.min(
-                e.capacidade_maxima_kg,
-                Number((e.capacidade_atual_kg + pesoKg).toFixed(2))
-              ),
-            }
+        e.id === ecopontoId && novaCapacidade !== null
+          ? { ...e, capacidade_atual_kg: novaCapacidade }
           : e
       )
     );

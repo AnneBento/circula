@@ -57,6 +57,14 @@ export interface Voucher {
   ativo: boolean;
 }
 
+export interface ResgateVoucher {
+  id: string;
+  cidadao_id: string;
+  voucher_id: string;
+  custo_pontos: number;
+  created_at?: string;
+}
+
 export const TABELA_MATERIAIS: Record<
   MaterialCategoria,
   {

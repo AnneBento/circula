@@ -61,6 +61,16 @@ create table if not exists public.vouchers (
   ativo boolean not null default true
 );
 
+-- 5. Resgates de Vouchers por Cidadão (carteira persistida)
+create table if not exists public.resgates_vouchers (
+  id uuid primary key default uuid_generate_v4(),
+  cidadao_id uuid not null references public.cidadaos(id) on delete cascade,
+  voucher_id uuid not null references public.vouchers(id) on delete cascade,
+  custo_pontos integer not null,
+  created_at timestamptz not null default now(),
+  unique (cidadao_id, voucher_id)
+);
+
 -- Migração para bancos já criados com a escala antiga de 3 níveis (idempotente)
 alter table public.cidadaos
   drop constraint if exists cidadaos_nivel_check,
@@ -75,6 +85,7 @@ alter table public.ecopontos enable row level security;
 alter table public.cidadaos enable row level security;
 alter table public.depositos enable row level security;
 alter table public.vouchers enable row level security;
+alter table public.resgates_vouchers enable row level security;
 
 create policy "Leitura publica ecopontos" on public.ecopontos for select using (true);
 create policy "Insercao ecopontos gestao" on public.ecopontos for insert with check (true);
@@ -88,10 +99,14 @@ create policy "Insercao depositos catador" on public.depositos for insert with c
 
 create policy "Leitura publica vouchers" on public.vouchers for select using (true);
 
+create policy "Leitura publica resgates_vouchers" on public.resgates_vouchers for select using (true);
+create policy "Insercao resgates_vouchers" on public.resgates_vouchers for insert with check (true);
+
 -- Habilitar Realtime
 alter publication supabase_realtime add table public.ecopontos;
 alter publication supabase_realtime add table public.cidadaos;
 alter publication supabase_realtime add table public.depositos;
+alter publication supabase_realtime add table public.resgates_vouchers;
 
 -- Dados iniciais sintéticos (Quixadá/CE)
 insert into public.ecopontos (codigo, nome, bairro, endereco, horario, capacidade_atual_kg, capacidade_maxima_kg) values
