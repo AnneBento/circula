@@ -5,6 +5,9 @@ export type MaterialCategoria =
   | 'Plástico Limpo'
   | 'Papelão';
 
+/** Níveis de participação do cidadão (mesma escala da Home e do README). */
+export type Nivel = 1 | 2 | 3 | 4 | 5;
+
 export interface Ecoponto {
   id: string;
   codigo: string;
@@ -25,7 +28,7 @@ export interface Cidadao {
   nome_ficticio: string;
   bairro: string;
   pontos: number;
-  nivel: 1 | 2 | 3;
+  nivel: Nivel;
   total_kg_entregue: number;
 }
 
@@ -49,7 +52,7 @@ export interface Voucher {
   parceiro: string;
   categoria: 'Educação' | 'Entretenimento' | 'Comércio Local';
   desconto: string;
-  nivel_minimo: 1 | 2 | 3;
+  nivel_minimo: Nivel;
   custo_pontos: number;
   ativo: boolean;
 }
@@ -101,34 +104,62 @@ export const TABELA_MATERIAIS: Record<
   },
 };
 
-export function calcularNivel(pontos: number): 1 | 2 | 3 {
-  if (pontos >= 800) return 3;
-  if (pontos >= 300) return 2;
+/**
+ * Limiares da escala de 5 níveis (pontos acumulados):
+ * - Nível 1 (Semente):     0 – 149
+ * - Nível 2 (Broto):       150 – 449
+ * - Nível 3 (Árvore):      450 – 799
+ * - Nível 4 (Guardião):    800 – 1499
+ * - Nível 5 (Embaixador):  >= 1500
+ */
+export const LIMIARES_NIVEL: readonly [number, number, number, number] = [
+  150, 450, 800, 1500,
+];
+
+export function calcularNivel(pontos: number): Nivel {
+  if (pontos >= LIMIARES_NIVEL[3]) return 5;
+  if (pontos >= LIMIARES_NIVEL[2]) return 4;
+  if (pontos >= LIMIARES_NIVEL[1]) return 3;
+  if (pontos >= LIMIARES_NIVEL[0]) return 2;
   return 1;
 }
 
-export function getInfoNivel(nivel: 1 | 2 | 3) {
+export function getInfoNivel(nivel: Nivel) {
   switch (nivel) {
     case 1:
       return {
-        nome: 'Nível 1: Iniciante',
-        proximo: 300,
+        nome: 'Nível 1: Semente',
+        proximo: LIMIARES_NIVEL[0],
         cor: 'from-emerald-500 to-teal-600',
         descricao: 'Primeiras entregas separadas nos Ecopontos de Quixadá.',
       };
     case 2:
       return {
-        nome: 'Nível 2: Separador Consciente',
-        proximo: 800,
+        nome: 'Nível 2: Broto',
+        proximo: LIMIARES_NIVEL[1],
         cor: 'from-teal-600 to-cyan-700',
         descricao: 'Separação recorrente sem contaminação orgânica.',
       };
     case 3:
       return {
-        nome: 'Nível 3: Guardião de Quixadá',
-        proximo: 1500,
-        cor: 'from-amber-500 to-emerald-700',
+        nome: 'Nível 3: Árvore',
+        proximo: LIMIARES_NIVEL[2],
+        cor: 'from-sky-600 to-cyan-700',
+        descricao: 'Árvore consolidada na economia circular de Quixadá.',
+      };
+    case 4:
+      return {
+        nome: 'Nível 4: Guardião',
+        proximo: LIMIARES_NIVEL[3],
+        cor: 'from-indigo-500 to-emerald-700',
         descricao: 'Referência comunitária em economia circular.',
+      };
+    case 5:
+      return {
+        nome: 'Nível 5: Embaixador',
+        proximo: LIMIARES_NIVEL[3],
+        cor: 'from-amber-500 to-emerald-700',
+        descricao: 'Embaixador da causa: impacto máximo e reconhecimento da cidade.',
       };
   }
 }

@@ -37,12 +37,11 @@ import {
   Utensils,
   X,
 } from 'lucide-react';
+import type { Nivel as NivelJornada } from '../types/database';
 
 export const Route = createFileRoute('/')({
   component: HomeLanding,
 });
-
-type NivelJornada = 1 | 2 | 3 | 4 | 5;
 
 interface CupomCarrossel {
   id: string;
