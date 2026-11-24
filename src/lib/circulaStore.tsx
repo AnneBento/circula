@@ -187,13 +187,16 @@ interface CirculaContextType {
   depositos: Deposito[];
   vouchers: Voucher[];
   vouchersResgatados: string[];
+  avisoSupabase: string | null;
   resgatarVoucher: (voucherId: string) => Promise<{ ok: boolean; mensagem: string }>;
   registrarEntrega: (input: RegistrarEntregaInput) => Promise<{
     ok: boolean;
     mensagem: string;
     deposito?: Deposito;
   }>;
-  cadastrarEcoponto: (input: NovoEcopontoInput) => Promise<Ecoponto>;
+  cadastrarEcoponto: (
+    input: NovoEcopontoInput
+  ) => Promise<{ ok: boolean; mensagem: string; ecoponto?: Ecoponto }>;
   modoSupabase: boolean;
 }
 
@@ -206,25 +209,44 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [depositos, setDepositos] = useState<Deposito[]>(INITIAL_DEPOSITOS);
   const [vouchers, setVouchers] = useState<Voucher[]>(INITIAL_VOUCHERS);
   const [resgates, setResgates] = useState<ResgateVoucher[]>([]);
+  const [supabaseAtivo, setSupabaseAtivo] = useState(isSupabaseConfigured);
+  const [avisoSupabase, setAvisoSupabase] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
     const client = supabase;
 
-    const carregarDados = async () => {
-      const [ecoRes, cidRes, depRes, vouRes, resRes] = await Promise.all([
-        client.from('ecopontos').select('*').order('codigo'),
-        client.from('cidadaos').select('*'),
-        client.from('depositos').select('*').order('created_at', { ascending: false }).limit(20),
-        client.from('vouchers').select('*').eq('ativo', true),
-        client.from('resgates_vouchers').select('*'),
-      ]);
+    const ativarFallbackDemo = () => {
+      setSupabaseAtivo(false);
+      setAvisoSupabase('Conexão com Supabase indisponível. Exibindo dados de demonstração.');
+    };
 
-      if (ecoRes.data?.length) setEcopontos(ecoRes.data as Ecoponto[]);
-      if (cidRes.data?.length) setCidadaos(cidRes.data as Cidadao[]);
-      if (depRes.data?.length) setDepositos(depRes.data as Deposito[]);
-      if (vouRes.data?.length) setVouchers(vouRes.data as Voucher[]);
-      if (resRes.data) setResgates(resRes.data as ResgateVoucher[]);
+    const carregarDados = async () => {
+      try {
+        const [ecoRes, cidRes, depRes, vouRes, resRes] = await Promise.all([
+          client.from('ecopontos').select('*').order('codigo'),
+          client.from('cidadaos').select('*'),
+          client.from('depositos').select('*').order('created_at', { ascending: false }).limit(20),
+          client.from('vouchers').select('*').eq('ativo', true),
+          client.from('resgates_vouchers').select('*'),
+        ]);
+
+        const erro = ecoRes.error || cidRes.error || depRes.error || vouRes.error || resRes.error;
+        if (erro) {
+          ativarFallbackDemo();
+          return;
+        }
+
+        if (ecoRes.data?.length) setEcopontos(ecoRes.data as Ecoponto[]);
+        if (cidRes.data?.length) setCidadaos(cidRes.data as Cidadao[]);
+        if (depRes.data?.length) setDepositos(depRes.data as Deposito[]);
+        if (vouRes.data?.length) setVouchers(vouRes.data as Voucher[]);
+        if (resRes.data) setResgates(resRes.data as ResgateVoucher[]);
+        setSupabaseAtivo(true);
+        setAvisoSupabase(null);
+      } catch {
+        ativarFallbackDemo();
+      }
     };
 
     carregarDados();
@@ -232,16 +254,16 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const channel = client
       .channel('circula-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'ecopontos' }, () => {
-        carregarDados();
+        void carregarDados();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'cidadaos' }, () => {
-        carregarDados();
+        void carregarDados();
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'depositos' }, () => {
-        carregarDados();
+        void carregarDados();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'resgates_vouchers' }, () => {
-        carregarDados();
+        void carregarDados();
       })
       .subscribe();
 
@@ -289,30 +311,41 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
       created_at: new Date().toISOString(),
     };
 
-    setCidadaos((prev) =>
-      prev.map((c) => (c.id === cidadaoAtivo.id ? { ...c, pontos: novosPontos } : c))
-    );
-    setResgates((prev) => [...prev, resgateLocal]);
+    const rollback = () => {
+      setCidadaos((prev) =>
+        prev.map((c) => (c.id === cidadaoAtivo.id ? { ...c, pontos: cidadaoAtivo.pontos } : c))
+      );
+      setResgates((prev) => prev.filter((r) => r.id !== resgateLocal.id));
+    };
 
-    if (isSupabaseConfigured && supabase) {
-      const { error: resgateError } = await supabase.from('resgates_vouchers').insert({
-        cidadao_id: cidadaoAtivo.id,
-        voucher_id: voucherId,
-        custo_pontos: voucher.custo_pontos,
-      });
+    if (supabaseAtivo && supabase) {
+      setCidadaos((prev) =>
+        prev.map((c) => (c.id === cidadaoAtivo.id ? { ...c, pontos: novosPontos } : c))
+      );
+      setResgates((prev) => [...prev, resgateLocal]);
 
-      if (resgateError) {
-        setCidadaos((prev) =>
-          prev.map((c) => (c.id === cidadaoAtivo.id ? { ...c, pontos: cidadaoAtivo.pontos } : c))
-        );
-        setResgates((prev) => prev.filter((r) => r.id !== resgateLocal.id));
+      try {
+        const { error: resgateError } = await supabase.from('resgates_vouchers').insert({
+          cidadao_id: cidadaoAtivo.id,
+          voucher_id: voucherId,
+          custo_pontos: voucher.custo_pontos,
+        });
+        if (resgateError) throw resgateError;
+
+        const { error: pontosError } = await supabase
+          .from('cidadaos')
+          .update({ pontos: novosPontos })
+          .eq('id', cidadaoAtivo.id);
+        if (pontosError) throw pontosError;
+      } catch {
+        rollback();
         return { ok: false, mensagem: 'Não foi possível salvar o resgate. Tente novamente.' };
       }
-
-      await supabase
-        .from('cidadaos')
-        .update({ pontos: novosPontos })
-        .eq('id', cidadaoAtivo.id);
+    } else {
+      setCidadaos((prev) =>
+        prev.map((c) => (c.id === cidadaoAtivo.id ? { ...c, pontos: novosPontos } : c))
+      );
+      setResgates((prev) => [...prev, resgateLocal]);
     }
 
     return {
@@ -367,33 +400,43 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
         )
       : null;
 
-    if (isSupabaseConfigured && supabase) {
-      await supabase.from('depositos').insert({
-        cidadao_id: cidadao.id,
-        ecoponto_id: ecopontoId,
-        catador_operador: novoDeposito.catador_operador,
-        categoria_material: categoria,
-        peso_kg: pesoKg,
-        pontos_gerados: pontosGerados,
-        renda_catador_brl: rendaCatador,
-        economia_ppp_brl: economiaPpp,
-        inspecao_limpa: true,
-      });
+    if (supabaseAtivo && supabase) {
+      try {
+        const { error: depError } = await supabase.from('depositos').insert({
+          cidadao_id: cidadao.id,
+          ecoponto_id: ecopontoId,
+          catador_operador: novoDeposito.catador_operador,
+          categoria_material: categoria,
+          peso_kg: pesoKg,
+          pontos_gerados: pontosGerados,
+          renda_catador_brl: rendaCatador,
+          economia_ppp_brl: economiaPpp,
+          inspecao_limpa: true,
+        });
+        if (depError) throw depError;
 
-      await supabase
-        .from('cidadaos')
-        .update({
-          pontos: novosPontos,
-          nivel: novoNivel,
-          total_kg_entregue: novoTotalKg,
-        })
-        .eq('id', cidadao.id);
+        const { error: cidError } = await supabase
+          .from('cidadaos')
+          .update({
+            pontos: novosPontos,
+            nivel: novoNivel,
+            total_kg_entregue: novoTotalKg,
+          })
+          .eq('id', cidadao.id);
+        if (cidError) throw cidError;
 
-      if (novaCapacidade !== null) {
-        await supabase
-          .from('ecopontos')
-          .update({ capacidade_atual_kg: novaCapacidade })
-          .eq('id', ecopontoId);
+        if (novaCapacidade !== null) {
+          const { error: ecoError } = await supabase
+            .from('ecopontos')
+            .update({ capacidade_atual_kg: novaCapacidade })
+            .eq('id', ecopontoId);
+          if (ecoError) throw ecoError;
+        }
+      } catch {
+        return {
+          ok: false,
+          mensagem: 'Não foi possível registrar a entrega. Verifique a conexão e tente novamente.',
+        };
       }
     }
 
@@ -425,7 +468,9 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
   };
 
-  const cadastrarEcoponto = async (input: NovoEcopontoInput): Promise<Ecoponto> => {
+  const cadastrarEcoponto = async (
+    input: NovoEcopontoInput
+  ): Promise<{ ok: boolean; mensagem: string; ecoponto?: Ecoponto }> => {
     const proximoNumero = String(ecopontos.length + 1).padStart(2, '0');
     const novo: Ecoponto = {
       id: `eco-${Date.now()}`,
@@ -440,28 +485,35 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
       ativo: true,
     };
 
-    if (isSupabaseConfigured && supabase) {
-      const { data } = await supabase
-        .from('ecopontos')
-        .insert({
-          codigo: novo.codigo,
-          nome: novo.nome,
-          bairro: novo.bairro,
-          endereco: novo.endereco,
-          horario: novo.horario,
-          capacidade_maxima_kg: novo.capacidade_maxima_kg,
-          ativo: true,
-        })
-        .select()
-        .single();
-      if (data) {
-        setEcopontos((prev) => [...prev, data as Ecoponto]);
-        return data as Ecoponto;
+    if (supabaseAtivo && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('ecopontos')
+          .insert({
+            codigo: novo.codigo,
+            nome: novo.nome,
+            bairro: novo.bairro,
+            endereco: novo.endereco,
+            horario: novo.horario,
+            capacidade_maxima_kg: novo.capacidade_maxima_kg,
+            ativo: true,
+          })
+          .select()
+          .single();
+        if (error) throw error;
+        if (data) {
+          const ecoponto = data as Ecoponto;
+          setEcopontos((prev) => [...prev, ecoponto]);
+          return { ok: true, mensagem: 'Ecoponto cadastrado com sucesso.', ecoponto };
+        }
+        return { ok: false, mensagem: 'Não foi possível cadastrar o ecoponto. Tente novamente.' };
+      } catch {
+        return { ok: false, mensagem: 'Não foi possível cadastrar o ecoponto. Verifique a conexão e tente novamente.' };
       }
     }
 
     setEcopontos((prev) => [...prev, novo]);
-    return novo;
+    return { ok: true, mensagem: 'Ecoponto cadastrado com sucesso.', ecoponto: novo };
   };
 
   return (
@@ -474,10 +526,11 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
         depositos,
         vouchers,
         vouchersResgatados,
+        avisoSupabase,
         resgatarVoucher,
         registrarEntrega,
         cadastrarEcoponto,
-        modoSupabase: isSupabaseConfigured,
+        modoSupabase: supabaseAtivo,
       }}
     >
       {children}
