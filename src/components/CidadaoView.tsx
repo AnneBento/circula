@@ -50,8 +50,8 @@ export const CidadaoView: React.FC = () => {
   return (
     <div className="space-y-6 pb-24">
       {/* Seletor rápido de perfil demo */}
-      <div className="flex items-center justify-between gap-2 rounded-2xl bg-white p-3 shadow-xs border border-slate-200/80">
-        <span className="text-xs font-medium text-slate-500">Perfil Demo (LGPD):</span>
+      <div className="flex items-center justify-between gap-2 rounded-2xl bg-white dark:bg-slate-900 p-3 shadow-xs border border-slate-200/80 dark:border-slate-700/80">
+        <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Perfil Demo (LGPD):</span>
         <div className="flex gap-1.5">
           {cidadaos.map((c) => (
             <button
@@ -60,7 +60,7 @@ export const CidadaoView: React.FC = () => {
               className={`rounded-xl px-2.5 py-1 text-xs font-semibold transition ${
                 c.codigo_entrega === cidadaoAtivo.codigo_entrega
                   ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
               }`}
             >
               {c.codigo_entrega}
@@ -100,7 +100,7 @@ export const CidadaoView: React.FC = () => {
           </div>
           <button
             onClick={copiarCodigo}
-            className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-xs font-bold text-emerald-900 shadow-xs active:scale-95 transition"
+            className="flex items-center gap-1.5 rounded-xl bg-white dark:bg-slate-900 px-3 py-2 text-xs font-bold text-emerald-900 shadow-xs active:scale-95 transition"
           >
             {copiado ? (
               <>
@@ -132,7 +132,7 @@ export const CidadaoView: React.FC = () => {
               initial={{ width: 0 }}
               animate={{ width: `${progresso}%` }}
               transition={{ duration: 0.6 }}
-              className="h-full rounded-full bg-white"
+              className="h-full rounded-full bg-white dark:bg-slate-900"
             />
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
@@ -147,11 +147,11 @@ export const CidadaoView: React.FC = () => {
       {/* Vitrine de Vouchers */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="flex items-center gap-2 text-base font-bold text-slate-900">
+          <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
             <Gift className="h-5 w-5 text-emerald-600" />
             Vouchers & Parceiros Locais
           </h3>
-          <span className="text-xs font-medium text-slate-500">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
             {vouchersResgatados.length} resgatado(s)
           </span>
         </div>
@@ -180,8 +180,8 @@ export const CidadaoView: React.FC = () => {
                 key={voucher.id}
                 className={`flex flex-col justify-between rounded-2xl border p-4 transition ${
                   desbloqueado
-                    ? 'border-slate-200 bg-white shadow-xs'
-                    : 'border-slate-200/60 bg-slate-100/70 opacity-75'
+                    ? 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xs'
+                    : 'border-slate-200/60 dark:border-slate-700/60 bg-slate-100/70 opacity-75'
                 }`}
               >
                 <div>
@@ -193,12 +193,12 @@ export const CidadaoView: React.FC = () => {
                       {voucher.desconto}
                     </span>
                   </div>
-                  <h4 className="mt-2.5 font-bold text-slate-900">{voucher.titulo}</h4>
-                  <p className="text-xs text-slate-500">{voucher.parceiro}</p>
+                  <h4 className="mt-2.5 font-bold text-slate-900 dark:text-slate-100">{voucher.titulo}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{voucher.parceiro}</p>
                 </div>
 
                 <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-                  <span className="text-xs font-bold text-slate-700">
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                     {voucher.custo_pontos} pts • Nível {voucher.nivel_minimo}+
                   </span>
                   <button
@@ -209,7 +209,7 @@ export const CidadaoView: React.FC = () => {
                         ? 'bg-emerald-100 text-emerald-800'
                         : desbloqueado
                         ? 'bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95'
-                        : 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                        : 'bg-slate-200 text-slate-500 dark:text-slate-400 cursor-not-allowed'
                     }`}
                   >
                     <Ticket className="h-3.5 w-3.5" />
@@ -225,7 +225,7 @@ export const CidadaoView: React.FC = () => {
       {/* Ecopontos Ativos em Quixadá */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="flex items-center gap-2 text-base font-bold text-slate-900">
+          <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
             <MapPin className="h-5 w-5 text-emerald-600" />
             Ecopontos Ativos (AMMA / CONSERCE)
           </h3>
@@ -243,22 +243,22 @@ export const CidadaoView: React.FC = () => {
             return (
               <div
                 key={eco.id}
-                className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs"
+                className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-xs"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <span className="font-mono text-xs font-bold text-emerald-700">
                       {eco.codigo} • Bairro {eco.bairro}
                     </span>
-                    <h4 className="font-bold text-slate-900">{eco.nome}</h4>
-                    <p className="mt-0.5 text-xs text-slate-500">{eco.endereco}</p>
+                    <h4 className="font-bold text-slate-900 dark:text-slate-100">{eco.nome}</h4>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{eco.endereco}</p>
                   </div>
                   <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
                     {ocupacao}% ocupado
                   </span>
                 </div>
 
-                <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
                   <span className="inline-flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5 text-slate-400" />
                     {eco.horario}

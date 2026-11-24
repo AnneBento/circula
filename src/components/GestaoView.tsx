@@ -114,16 +114,16 @@ export const GestaoView: React.FC = () => {
       {/* Cadastro e Ativação de Novo Ecoponto */}
       <form
         onSubmit={handleCriarEcoponto}
-        className="space-y-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-xs"
+        className="space-y-4 rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-xs"
       >
-        <h3 className="flex items-center gap-2 text-base font-bold text-slate-900">
+        <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
           <MapPinPlus className="h-5 w-5 text-emerald-600" />
           Cadastrar e Ativar Novo Ecoponto
         </h3>
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="block text-xs font-bold text-slate-700">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
               Nome do Ecoponto
             </label>
             <input
@@ -137,7 +137,7 @@ export const GestaoView: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700">Bairro</label>
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">Bairro</label>
             <input
               type="text"
               value={bairro}
@@ -151,7 +151,7 @@ export const GestaoView: React.FC = () => {
 
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="sm:col-span-2">
-            <label className="block text-xs font-bold text-slate-700">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
               Endereço Completo
             </label>
             <input
@@ -165,7 +165,7 @@ export const GestaoView: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
               Capacidade (kg)
             </label>
             <input
@@ -198,7 +198,7 @@ export const GestaoView: React.FC = () => {
 
       {/* Ranking de Engajamento Comunitário */}
       <section className="space-y-3">
-        <h3 className="flex items-center gap-2 text-base font-bold text-slate-900">
+        <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
           <Trophy className="h-5 w-5 text-amber-500" />
           Ranking de Engajamento Cidadão
         </h3>
@@ -206,14 +206,14 @@ export const GestaoView: React.FC = () => {
           {rankingCidadaos.map((cid, index) => (
             <div
               key={cid.id}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-xs"
+              className="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-xs"
             >
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-xs font-black text-emerald-800">
                   #{index + 1}
                 </span>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">{cid.nome_ficticio}</h4>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">{cid.nome_ficticio}</h4>
                   <div className="mt-1">
                     <NivelBadge nivel={cid.nivel} />
                   </div>
@@ -223,7 +223,7 @@ export const GestaoView: React.FC = () => {
                 <span className="block text-base font-black text-emerald-700">
                   {cid.pontos} pts
                 </span>
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">
                   {cid.total_kg_entregue} kg
                 </span>
               </div>
@@ -234,7 +234,7 @@ export const GestaoView: React.FC = () => {
 
       {/* Monitoramento da Rede de Ecopontos */}
       <section className="space-y-2.5">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Capacidade dos Ecopontos ({ecopontos.length} ativos)
         </h3>
         {ecopontos.map((eco) => {
@@ -245,9 +245,9 @@ export const GestaoView: React.FC = () => {
           return (
             <div
               key={eco.id}
-              className="rounded-2xl border border-slate-200 bg-white p-3.5 text-xs"
+              className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3.5 text-xs"
             >
-              <div className="flex justify-between font-bold text-slate-900">
+              <div className="flex justify-between font-bold text-slate-900 dark:text-slate-100">
                 <span>
                   {eco.codigo} • {eco.nome}
                 </span>
@@ -255,7 +255,7 @@ export const GestaoView: React.FC = () => {
                   {eco.capacidade_atual_kg} / {eco.capacidade_maxima_kg} kg ({pct}%)
                 </span>
               </div>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                 <div
                   className={`h-full rounded-full ${
                     pct > 80 ? 'bg-amber-500' : 'bg-emerald-600'

@@ -96,16 +96,16 @@ export const CatadorView: React.FC = () => {
       {/* Formulário de Validação */}
       <form
         onSubmit={handleValidar}
-        className="space-y-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-xs"
+        className="space-y-4 rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-xs"
       >
-        <h3 className="flex items-center gap-2 text-base font-bold text-slate-900">
+        <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
           <UserCheck className="h-5 w-5 text-emerald-600" />
           Registrar Recebimento no Ecoponto
         </h3>
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="block text-xs font-bold text-slate-700">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
               Código do Cidadão
             </label>
             <input
@@ -119,7 +119,7 @@ export const CatadorView: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
               Ecoponto de Operação
             </label>
             <select
@@ -138,7 +138,7 @@ export const CatadorView: React.FC = () => {
 
         {/* Seleção de Categoria com Valorização de Cobre e Eletrônicos */}
         <div>
-          <label className="block text-xs font-bold text-slate-700">
+          <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
             Categoria do Material (Valorização por Pureza)
           </label>
           <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -153,10 +153,10 @@ export const CatadorView: React.FC = () => {
                   className={`rounded-2xl border p-3 text-left transition ${
                     ativo
                       ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-600/20'
-                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                      : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:bg-slate-800'
                   }`}
                 >
-                  <div className="text-xs font-extrabold text-slate-900">{cat}</div>
+                  <div className="text-xs font-extrabold text-slate-900 dark:text-slate-100">{cat}</div>
                   <div className="mt-1 text-[11px] font-bold text-emerald-700">
                     R$ {info.precoCatadorKg.toFixed(2)}/kg • {info.pontosPorKg} pts/kg
                   </div>
@@ -174,7 +174,7 @@ export const CatadorView: React.FC = () => {
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="block text-xs font-bold text-slate-700">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
               Peso Aferido (kg)
             </label>
             <div className="relative mt-1">
@@ -192,7 +192,7 @@ export const CatadorView: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
               Catador / Associação Responsável
             </label>
             <input
@@ -205,7 +205,7 @@ export const CatadorView: React.FC = () => {
         </div>
 
         {/* Checklist de Qualidade */}
-        <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
+        <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-3.5">
           <input
             type="checkbox"
             checked={inspecaoLimpa}
@@ -213,10 +213,10 @@ export const CatadorView: React.FC = () => {
             className="h-5 w-5 rounded accent-emerald-600"
           />
           <div className="text-xs">
-            <span className="font-bold text-slate-900">
+            <span className="font-bold text-slate-900 dark:text-slate-100">
               Inspeção visual aprovada (0% resíduo orgânico)
             </span>
-            <p className="text-slate-500">
+            <p className="text-slate-500 dark:text-slate-400">
               Garante matéria-prima limpa e evita chorume na cadeia de reciclagem.
             </p>
           </div>
@@ -260,26 +260,26 @@ export const CatadorView: React.FC = () => {
 
       {/* Histórico Auditável */}
       <section className="space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Últimas Pesagens Auditadas
         </h3>
         <div className="space-y-2.5">
           {depositos.slice(0, 5).map((dep) => (
             <div
               key={dep.id}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-3.5 text-xs"
+              className="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3.5 text-xs"
             >
               <div>
-                <span className="font-bold text-slate-900">
+                <span className="font-bold text-slate-900 dark:text-slate-100">
                   {dep.categoria_material} • {dep.peso_kg} kg
                 </span>
-                <p className="text-slate-500">{dep.catador_operador}</p>
+                <p className="text-slate-500 dark:text-slate-400">{dep.catador_operador}</p>
               </div>
               <div className="text-right">
                 <span className="block font-extrabold text-emerald-700">
                   +R$ {dep.renda_catador_brl.toFixed(2)}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
+                <span className="inline-flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
                   <CheckCircle2 className="h-3 w-3 text-emerald-600" />+{dep.pontos_gerados} pts
                 </span>
               </div>
