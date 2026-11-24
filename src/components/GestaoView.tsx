@@ -131,7 +131,7 @@ export const GestaoView: React.FC = () => {
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               placeholder="Ex: Ecoponto Alto São Francisco"
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 text-sm focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
               required
             />
           </div>
@@ -143,7 +143,7 @@ export const GestaoView: React.FC = () => {
               value={bairro}
               onChange={(e) => setBairro(e.target.value)}
               placeholder="Ex: Alto São Francisco"
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 text-sm focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
               required
             />
           </div>
@@ -159,7 +159,7 @@ export const GestaoView: React.FC = () => {
               value={endereco}
               onChange={(e) => setEndereco(e.target.value)}
               placeholder="Rua / Referência em Quixadá"
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 text-sm focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
               required
             />
           </div>
@@ -172,7 +172,7 @@ export const GestaoView: React.FC = () => {
               type="number"
               value={capacidade}
               onChange={(e) => setCapacidade(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm font-bold focus:border-emerald-600 focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 text-sm font-bold focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
             />
           </div>
         </div>

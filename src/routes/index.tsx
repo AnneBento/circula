@@ -462,7 +462,7 @@ const LinhaCarrossel: React.FC<LinhaCarrosselProps> = ({
               {/* Picote de Ticket */}
               <div className="relative flex items-center justify-between bg-white dark:bg-slate-900">
                 <span className="-ml-1.5 h-3 w-3 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800" />
-                <div className="w-full border-t border-dashed border-slate-300" />
+                <div className="w-full border-t border-dashed border-slate-300 dark:border-slate-600" />
                 <span className="-mr-1.5 h-3 w-3 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800" />
               </div>
 

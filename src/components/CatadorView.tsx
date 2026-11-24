@@ -113,7 +113,7 @@ export const CatadorView: React.FC = () => {
               value={codigoCidadao}
               onChange={(e) => setCodigoCidadao(e.target.value)}
               placeholder="Ex: QXD-2026"
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-mono text-sm font-bold uppercase focus:border-emerald-600 focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 font-mono text-sm font-bold uppercase focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
               required
             />
           </div>
@@ -125,7 +125,7 @@ export const CatadorView: React.FC = () => {
             <select
               value={ecopontoId}
               onChange={(e) => setEcopontoId(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm font-medium focus:border-emerald-600 focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 text-sm font-medium focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
             >
               {ecopontos.map((eco) => (
                 <option key={eco.id} value={eco.id}>
@@ -185,7 +185,7 @@ export const CatadorView: React.FC = () => {
                 min="0.1"
                 value={pesoKg}
                 onChange={(e) => setPesoKg(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 pl-10 pr-4 py-2.5 text-sm font-bold focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 pl-10 pr-4 py-2.5 text-sm font-bold focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
                 required
               />
             </div>
@@ -199,7 +199,7 @@ export const CatadorView: React.FC = () => {
               type="text"
               value={catadorOperador}
               onChange={(e) => setCatadorOperador(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 focus:outline-none"
+              className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 text-sm focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
             />
           </div>
         </div>
