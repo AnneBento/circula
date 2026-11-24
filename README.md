@@ -1,168 +1,145 @@
 # CIRCULA
 
-> *"O que circula transforma."*
+> "O que circula transforma."
 
-![React](https://img.shields.io/badge/React-19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![TanStack Router](https://img.shields.io/badge/TanStack_Router-v1-FF4154?style=for-the-badge&logo=reactrouter&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-11.x-0055FF?style=for-the-badge&logo=framer&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-Free_Tier-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
-![PWA](https://img.shields.io/badge/Mobile-PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
+Automação de WhatsApp para catadores, associação, gestores públicos e população, integrada a um painel de gestão e a um aplicativo web (PWA) para cidadãos que desejam acompanhar seu impacto ambiental e comprovar participação no IPTU Verde.
 
-**CIRCULA** é uma plataforma Mobile PWA de economia circular desenvolvida durante o **Hackathon Estação Tecnológica 2026** (Quixadá/CE). O nome une **circularidade e movimento**, traduzindo uma rede viva onde **materiais recicláveis, pessoas, renda e benefícios circulam** de forma integrada entre cidadãos, catadores, parceiros locais e o poder público.
+Projeto concebido e desenvolvido durante o **Hackathon Estação Tecnológica 2026** (Quixadá/CE), realizado pelo HUBINE (Banco do Nordeste), Estação Tecnológica de Quixadá e IFCE Campus Quixadá.
 
----
+## Proposta de Valor Única
 
-<<<<<<< HEAD
-##  O Problema e Nossa Solução
-=======
-## O Problema e Nossa Solução
->>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
+> "Um número de WhatsApp que organiza a coleta seletiva inteira: avisa o morador, orienta o catador e dá os dados ao gestor."
 
-Com a transição do antigo lixão de Quixadá para a nova usina de processamento via Parceria Público-Privada (PPP), o município enfrenta um triplo desafio **social, ambiental e financeiro**:
+* **Zero barreira de entrada:** Funciona sem exigir instalação de aplicativo pela maioria da população e sem exigir smartphones avançados dos catadores.
+* **Inclusão com protagonismo da associação:** Opera em conjunto com a associação de catadores e a Autarquia Municipal do Meio Ambiente (AMMA), fortalecendo o trabalho coletivo sem "uberizar" a categoria.
+* **Engajamento progressivo:** Para moradores que desejam ir além, o aplicativo web (PWA) oferece acompanhamento de impacto ambiental, acúmulo de pontos e comprovação auditável de peso e rota por domicílio para o **IPTU Verde**.
+* **Conceito de alto nível:** Une a lógica operacional do Re-ciclo (Fortaleza) com a simplicidade do agendamento por WhatsApp (São Luís), adaptado à realidade de Quixadá sem depender de triciclos ou infraestrutura complexa.
 
-1. **Social:** Catadores que antes passavam até 10 horas diárias no lixão buscando metais de alto valor (cobre, ferro, alumínio) perdem sua fonte direta de sustento, enquanto o auxílio atual possui cobertura limitada e o programa *Incentivo Verde* enfrenta gargalos logísticos.
-2. **Ambiental:** A falta de separação na fonte contamina recicláveis com resíduos orgânicos (gerando chorume no solo) e leva à queima clandestina de cabos plásticos para extração de cobre, emitindo gases tóxicos.
-3. **Financeiro:** O processamento de resíduos sólidos representa o maior desembolso financeiro do município. Cada tonelada de material reciclável que chega misturada ao lixo comum gera custo público desnecessário na usina.
+## O Problema e Alternativas Existentes
 
-### Como o CIRCULA Resolve
-O **CIRCULA** intercepta os materiais recicláveis antes que sejam descartados no lixo comum, reorganizando a cadeia em três frentes conectadas:
+### Dores Identificadas
+1. **Desinformação e baixa cobertura:** A população não sabe os dias de coleta, o que separar nem como solicitar o recolhimento. Atualmente, a coleta seletiva cobre apenas 5 bairros e possui baixa divulgação.
+2. **Operação manual e sem rastreabilidade:** Os catadores mobilizam-se manualmente em grupos de WhatsApp da associação e da AMMA, sem registro estruturado do que foi coletado.
+3. **Ausência de dados para gestão:** A associação e os gestores públicos não dispõem de indicadores consolidados de peso, rota e renda para planejar operações, remunerar com precisão e comprovar resultados ambientais e financeiros.
+4. **Falta de incentivo contínuo:** Os Pontos de Entrega Voluntária (PEVs) foram depredados e não houve adoção sustentável por parte da população.
 
-<<<<<<< HEAD
-* ** Ecopontos Centralizados (Gestão AMMA / CONSERCE):** Pontos estratégicos distribuídos pelos bairros de Quixadá, cadastrados e divulgados em tempo real pela administração pública.
-* ** Níveis de Confiança & Vouchers (Engajamento Cidadão):** Cidadãos que entregam materiais limpos e separados nos Ecopontos acumulam pontos e sobem de **Nível de Confiança**, desbloqueando vouchers e descontos em parceiros de **educação, entretenimento e comércio local**.
-* ** Validação Presencial pelo Catador (Dignidade e Renda):** O catador vinculado ao Ecoponto inspeciona a qualidade do material (garantindo que não haja contaminação orgânica) e registra o peso no aplicativo. Ele recebe matéria-prima limpa e de alto valor (como cobre e eletrônicos) sem precisar queimar plástico, sem depender de atravessadores e gerando histórico auditável de produtividade para políticas públicas.
+### Alternativas Existentes Mapeadas
+* **Em Quixadá:** Grupos manuais de WhatsApp, coleta com carrinhos em 5 bairros, PEVs depredados e auxílio municipal de R$ 300,00 restrito a parte dos catadores.
+* **Referências externas:** Re-ciclo (Fortaleza), Cataki e agendamento via WhatsApp (São Luís).
 
----
+## Solução e Arquitetura Funcional
 
-##  Módulos da Aplicação (Mobile PWA)
-=======
-* **Ecopontos Centralizados (Gestão AMMA / CONSERCE):** Pontos estratégicos distribuídos pelos bairros de Quixadá, cadastrados e divulgados em tempo real pela administração pública.
-* **Níveis de Confiança & Vouchers (Engajamento Cidadão):** Cidadãos que entregam materiais limpos e separados nos Ecopontos acumulam pontos e sobem de **Nível de Confiança**, desbloqueando vouchers e descontos em parceiros de **educação, entretenimento e comércio local**.
-* **Validação Presencial pelo Catador (Dignidade e Renda):** O catador vinculado ao Ecoponto inspeciona a qualidade do material (garantindo que não haja contaminação orgânica) e registra o peso no aplicativo. Ele recebe matéria-prima limpa e de alto valor (como cobre e eletrônicos) sem precisar queimar plástico, sem depender de atravessadores e gerando histórico auditável de produtividade para políticas públicas.
+O **CIRCULA** organiza a cadeia de reciclagem em quatro frentes integradas, além de uma segunda fase voltada ao beneficiamento de metais:
 
----
+1. **WhatsApp da População (Bot Automatizado):**
+   * Informa o dia e turno da coleta seletiva no bairro do morador.
+   * Envia lembretes automáticos e orientações práticas sobre como separar resíduos secos (evitando contaminação orgânica e chorume).
+   * Permite solicitar coleta sob demanda de forma conversacional, sem baixar nenhum aplicativo.
+2. **WhatsApp de Catadores e Associação:**
+   * Gera listas de rotas e avisos prontos para o coordenador encaminhar diretamente aos grupos já utilizados pelos catadores.
+   * Organiza as solicitações por proximidade e turno, otimizando o tempo de trabalho em campo.
+3. **Painel dos Gestores (Associação e AMMA):**
+   * Registro de pesagem dos materiais recolhidos por rota e por catador.
+   * Geração de relatório transparente de produtividade e pagamento.
+   * Monitoramento em tempo real de quilogramas e toneladas desviadas do aterro/usina e economia financeira gerada ao município.
+4. **App Web / PWA para a População Engajada:**
+   * Painel individual com histórico de entregas, impacto ambiental gerado e pontuação acumulada.
+   * Emissão de comprovante de participação recorrente na coleta seletiva para habilitação no **IPTU Verde** e benefícios em comércios parceiros.
+5. **Roadmap Fase 2 (Beneficiamento de Metais):**
+   * Implantação de ponto especializado de recebimento de metais e disponibilização de descascador mecânico de fios na associação, eliminando a queima clandestina de plástico para extração de cobre e aumentando a margem de venda direta.
 
-## Módulos da Aplicação (Mobile PWA)
->>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
+## Público, Canais e Vantagem Competitiva
 
-A aplicação foi projetada com foco *mobile-first* e experiência fluida de aplicativo nativo:
+### Segmentos de Clientes e Adotantes Iniciais
+* **Contratantes e Parceiros:** AMMA, Prefeitura de Quixadá e estabelecimentos comerciais integrantes do *Recicla Comércio*.
+* **Operação:** Associação de catadores, coordenador operacional e gestores públicos.
+* **Catadores:** Recebem rotas estruturadas e avisos diretamente nos grupos de WhatsApp.
+* **População:** Atendimento universal via WhatsApp, com migração opcional para o App PWA pelos moradores mais engajados.
+* **Adotantes Iniciais (Early Adopters):** Associação e catadores já organizados em grupos, moradores dos 5 bairros com coleta seletiva atual, escolas locais e cidadãos interessados nos descontos do IPTU Verde.
 
-1. **Visão Cidadão (`/cidadao`):**
-   * Mapa/lista de Ecopontos ativos em Quixadá com horários e materiais aceitos.
-   * Cartão de identidade circular com **Código de Entrega** rápido.
-   * Barra de progresso do **Nível de Confiança** (*Nível 1: Iniciante*, *Nível 2: Separador Consciente*, *Nível 3: Guardião de Quixadá*).
-   * Vitrine interativa de vouchers desbloqueados conforme o nível atingido.
-2. **Visão Catador / Operador (`/catador`):**
-   * Terminal ágil de validação de entregas via código do cidadão.
-   * Seleção de categoria de material (com valorização diferenciada para Cobre/Fios, Metais, Eletrônicos, Plástico Limpo e Papelão) e pesagem.
-   * Cálculo instantâneo de rendimento direto e atualização imediata da pontuação do cidadão.
-3. **Painel Centralizado Gestão Pública (`/gestao`):**
-   * Cadastro e ativação de novos Ecopontos com publicação instantânea para a comunidade.
-   * Indicadores em tempo real: volume total (kg) desviado da usina PPP, economia financeira estimada para os cofres públicos, metais recuperados sem queima e ranking de engajamento.
+### Canais de Aquisição e Mobilização
+* QR Code e link direto do WhatsApp impressos em materiais de escolas, comércios parceiros e contas de água ou IPTU.
+* Cadastro ativo realizado pelos próprios catadores durante as abordagens porta a porta.
+* Divulgação nos grupos de WhatsApp já existentes da associação e da AMMA.
+* Campanhas locais via carro de som, rádio comunitária e redes oficiais da Prefeitura.
+* Convite automatizado enviado pelo próprio bot do WhatsApp para moradores que participam com frequência conhecerem o App PWA.
 
----
+### Vantagem Competitiva
+* **Adoção imediata:** Utiliza o canal de comunicação (WhatsApp) que catadores, coordenadores e AMMA já dominam e validaram em campo.
+* **Proteção social:** Opera sob gestão da associação de catadores, evitando a precarização ou uberização do trabalho.
+* **Lastro para políticas públicas:** Gera dados auditáveis de peso e rota por domicílio que servem como prova documental para concessão do IPTU Verde.
+* **Inclusão digital real:** Funciona integralmente sem aplicativo para a maioria da população; o app atua como camada complementar de engajamento.
 
-<<<<<<< HEAD
-##  Stack Tecnológica
-=======
-## Stack Tecnológica
->>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
+## Métricas-Chave e Sustentabilidade
 
-* **Frontend:** [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vite.dev/) (configurado como Mobile PWA instalável).
-* **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/) (`@tailwindcss/vite`) com design system responsivo e de alto contraste para uso em campo.
-* **Animações e Microinterações:** [Framer Motion](https://www.framer.com/motion/) para transições de nível, feedback de validação e navegação fluida.
-* **Roteamento Tipado:** [TanStack Router](https://tanstack.com/router) com gerenciamento de estado na URL e carregamento otimizado.
-* **Backend & Banco de Dados:** [Supabase](https://supabase.com/) (Plano Gratuito) utilizando PostgreSQL relacional e *Supabase Realtime* para sincronização instantânea entre o balcão do Ecoponto, o celular do cidadão e o painel da gestão.
+### Indicadores de Desempenho (KPIs)
+* Total de moradores cadastrados no WhatsApp e percentual que solicita coleta regularmente.
+* Produtividade operacional medida em quilogramas coletados por hora de trabalho do catador.
+* Volume total de toneladas desviadas por mês e economia financeira gerada por tonelada ao município.
+* Número de catadores com renda e produtividade formalmente registradas.
+* Usuários ativos no App PWA e taxa de conversão a partir do canal WhatsApp.
 
----
+### Modelo de Receita e Estrutura de Custos
 
-<<<<<<< HEAD
-##  Estrutura do Projeto
-=======
+| Dimensão | Componentes Previstos |
+| :--- | :--- |
+| **Fontes de Receita** | Convênio com a AMMA ou Prefeitura (mensalidade ou remuneração por tonelada desviada); adesão e patrocínio de comércios parceiros; captação via verbas e editais (Auxílio Catador, PSA Estadual, Cataforte); e, na Fase 2, venda direta de metais e cobre limpo pela associação. |
+| **Estrutura de Custos** | Desenvolvimento e manutenção do bot de WhatsApp, painel gestor e App PWA; custos de mensageria da API oficial do WhatsApp; hospedagem em nuvem, suporte e conta comercial verificada; aquisição de balança, computador e treinamento do coordenador na associação; e ações de mobilização (cartazes, QR codes, carro de som e visitas). |
+
+## Stack Tecnológica do MVP
+
+* **Frontend (Painel Gestor e App PWA):** React 19, TypeScript e Vite, estruturados como Progressive Web App (PWA) instalável.
+* **Interface e Animações:** Tailwind CSS v4 para estilização responsiva de alto contraste, TanStack Router para roteamento tipado entre visões e Framer Motion para transições e microinterações.
+* **Backend, Banco de Dados e Automação:** Supabase (PostgreSQL, Supabase Realtime para atualização ao vivo entre pesagem e painel gestor, e Edge Functions para integração com webhook da API do WhatsApp).
+
 ## Estrutura do Projeto
->>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
 
 ```text
 circula/
 ├── public/
-│   ├── manifest.webmanifest      # Configurações de instalação PWA (ícones, tema, display standalone)
-│   └── sw.js                     # Service Worker para cache de ativos essenciais
+│   ├── manifest.webmanifest      # Configuração de instalação Mobile PWA
+│   └── sw.js                     # Service Worker para cache básico
 ├── src/
 │   ├── components/
-│   │   ├── ui/                   # Botões, cards animados (Framer Motion) e badges de nível
-│   │   ├── CidadaoView.tsx       # Carteira de confiança, ecopontos e vitrine de vouchers
-│   │   ├── CatadorView.tsx       # Validador de triagem limpa e pesagem de materiais
-│   │   └── GestaoView.tsx        # Painel AMMA/CONSERCE para cadastro de pontos e métricas
+│   │   ├── GestorPanel.tsx       # Registro de pesagem, rotas e economia municipal
+│   │   ├── CidadaoApp.tsx        # Extrato de impacto, pontuação e comprovante IPTU Verde
+│   │   └── WhatsAppSim.tsx       # Simulador interativo do fluxo conversacional para demonstração
 │   ├── lib/
 │   │   └── supabase.ts           # Cliente Supabase tipado
 │   ├── routes/
-│   │   ├── __root.tsx            # Layout base mobile com barra de navegação
-│   │   ├── index.tsx             # Landing / Seleção rápida de perfil
-│   │   ├── cidadao.tsx           # Rota /cidadao
-│   │   ├── catador.tsx           # Rota /catador
-│   │   └── gestao.tsx            # Rota /gestao
-│   ├── types/
-│   │   └── database.ts           # Tipagens TypeScript das entidades do Supabase
-│   ├── index.css                 # Importação Tailwind CSS v4 (@import "tailwindcss";)
-│   └── main.tsx                  # Ponto de entrada React 19 + RouterProvider
-├── .env.example                  # Variáveis de ambiente necessárias
+│   │   ├── __root.tsx            # Layout base e navegação
+│   │   ├── index.tsx             # Visão geral e acesso rápido aos módulos
+│   │   ├── gestor.tsx            # Rota /gestor
+│   │   └── app.tsx               # Rota /app
+│   ├── index.css                 # Configuração Tailwind CSS v4
+│   └── main.tsx                  # Ponto de entrada React 19 + TanStack Router
+├── .env.example
 ├── package.json
-└── vite.config.ts                # Configuração Vite + Tailwind v4 + TanStack Router Plugin
+└── vite.config.ts
 ```
 
----
-
-<<<<<<< HEAD
-##  Como Executar Localmente
-=======
 ## Como Executar Localmente
->>>>>>> 0fd3f5a (docs: Atualizando documentação do projeto.)
 
-### Pré-requisitos
-* Node.js 20+ instalado
-* Conta gratuita no [Supabase](https://supabase.com/)
-
-### Passo a Passo
-
-1. **Clone o repositório e instale as dependências:**
+1. **Instale as dependências:**
    ```bash
-   git clone https://github.com/AnneBento/circula
+   git clone https://github.com/seu-usuario/circula.git
    cd circula
    npm install
    ```
 
 2. **Configure as variáveis de ambiente:**
-   Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`:
+   Crie um arquivo `.env` na raiz do projeto com as credenciais da sua instância gratuita do Supabase:
    ```env
    VITE_SUPABASE_URL=https://sua-instancia.supabase.co
    VITE_SUPABASE_ANON_KEY=sua-chave-anon-publica
    ```
 
-3. **Configure o Banco de Dados no Supabase:**
-   Acesse o **SQL Editor** no painel do seu projeto Supabase e execute o script de criação das tabelas (`ecopontos`, `cidadaos`, `depositos` e `vouchers`) e dados iniciais de demonstração.
-
-4. **Inicie o servidor de desenvolvimento:**
+3. **Inicie o ambiente de desenvolvimento:**
    ```bash
    npm run dev
    ```
-   Acesse `http://localhost:5173` no navegador (recomenda-se ativar o modo de visualização mobile no DevTools ou acessar pelo smartphone na mesma rede para instalar o PWA).
-
----
 
 ## Conformidade com o Edital (Hackathon Estação Tecnológica 2026)
 
-* **Proteção de Dados (LGPD - Lei nº 13.709/2018):** Em estrita observância ao item 8.4 do Edital, este protótipo utiliza exclusivamente dados sintéticos e fictícios para demonstração, sem coleta ou exposição de dados pessoais reais de cidadãos.
-* **Transparência Tecnológica e IA (Item 8.2):** Todo o código-fonte foi concebido e desenvolvido durante o período oficial do evento utilizando bibliotecas open-source listadas na seção de Stack Tecnológica e apoio de ferramentas de Inteligência Artificial Generativa para estruturação inicial de componentes, modelagem de dados e revisão documental.
-* **Propriedade Intelectual (Item 15.1):** Solução desenvolvida pela equipe participante no âmbito do Hackathon Estação Tecnológica 2026 (HUBINE / Banco do Nordeste, Estação Tecnológica de Quixadá e IFCE Campus Quixadá).
-
----
-
-## Equipe CIRCULA
-- Josias Batista
-
-Desenvolvido para transformar a gestão de resíduos sólidos e valorizar quem faz a reciclagem acontecer em Quixadá e no Sertão Central.
-
-> **CIRCULA — O que circula transforma.**
+* **Proteção de Dados Pessoais (LGPD - Lei nº 13.709/2018):** Em atendimento ao item 8.4 do Edital, este protótipo utiliza exclusivamente dados sintéticos e fictícios para demonstração de rotas, pesagens e cadastros, sem coleta ou exposição de dados pessoais reais.
+* **Transparência Tecnológica e Uso de IA (Item 8.2):** Todo o código-fonte deste MVP foi concebido e desenvolvido durante o período oficial do evento utilizando bibliotecas de código aberto e ferramentas de inteligência artificial generativa (Google Gemini) como suporte na estruturação de código, síntese documental e revisão técnica.
