@@ -152,12 +152,12 @@ export const CatadorView: React.FC = () => {
                   onClick={() => setCategoria(cat)}
                   className={`rounded-2xl border p-3 text-left transition ${
                     ativo
-                      ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-600/20'
-                      : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:bg-slate-800'
+                      ? 'border-circula-lime bg-circula-sage/20 ring-2 ring-circula-lime/30 dark:bg-circula-lime/15 dark:border-circula-lime'
+                      : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
                   <div className="text-xs font-extrabold text-slate-900 dark:text-slate-100">{cat}</div>
-                  <div className="mt-1 text-[11px] font-bold text-emerald-700">
+                  <div className="mt-1 text-[11px] font-bold text-emerald-700 dark:text-circula-lime">
                     R$ {info.precoCatadorKg.toFixed(2)}/kg • {info.pontosPorKg} pts/kg
                   </div>
                 </button>
