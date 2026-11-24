@@ -188,13 +188,14 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
+    const client = supabase;
 
     const carregarDados = async () => {
       const [ecoRes, cidRes, depRes, vouRes] = await Promise.all([
-        supabase.from('ecopontos').select('*').order('codigo'),
-        supabase.from('cidadaos').select('*'),
-        supabase.from('depositos').select('*').order('created_at', { ascending: false }).limit(20),
-        supabase.from('vouchers').select('*').eq('ativo', true),
+        client.from('ecopontos').select('*').order('codigo'),
+        client.from('cidadaos').select('*'),
+        client.from('depositos').select('*').order('created_at', { ascending: false }).limit(20),
+        client.from('vouchers').select('*').eq('ativo', true),
       ]);
 
       if (ecoRes.data?.length) setEcopontos(ecoRes.data as Ecoponto[]);
@@ -205,7 +206,7 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     carregarDados();
 
-    const channel = supabase
+    const channel = client
       .channel('circula-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'ecopontos' }, () => {
         carregarDados();
@@ -219,7 +220,7 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      client.removeChannel(channel);
     };
   }, []);
 
