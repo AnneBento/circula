@@ -21,6 +21,7 @@ export const GestaoView: React.FC = () => {
   const [horario, setHorario] = useState('Seg a Sáb • 07h às 17h');
   const [capacidade, setCapacidade] = useState('500');
   const [feedback, setFeedback] = useState<{ ok: boolean; mensagem: string } | null>(null);
+  const [enviando, setEnviando] = useState(false);
 
   const totalKgDesviado = depositos.reduce((acc, d) => acc + d.peso_kg, 0);
   const economiaPppTotal = depositos.reduce((acc, d) => acc + d.economia_ppp_brl, 0);
@@ -32,28 +33,34 @@ export const GestaoView: React.FC = () => {
 
   const handleCriarEcoponto = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (enviando) return;
     if (!nome.trim() || !bairro.trim() || !endereco.trim()) return;
 
-    const res = await cadastrarEcoponto({
-      nome: nome.trim(),
-      bairro: bairro.trim(),
-      endereco: endereco.trim(),
-      horario: horario.trim(),
-      capacidadeMaximaKg: Number(capacidade) || 500,
-    });
+    setEnviando(true);
+    try {
+      const res = await cadastrarEcoponto({
+        nome: nome.trim(),
+        bairro: bairro.trim(),
+        endereco: endereco.trim(),
+        horario: horario.trim(),
+        capacidadeMaximaKg: Number(capacidade) || 500,
+      });
 
-    if (!res.ok || !res.ecoponto) {
-      setFeedback({ ok: false, mensagem: res.mensagem });
-      return;
+      if (!res.ok || !res.ecoponto) {
+        setFeedback({ ok: false, mensagem: res.mensagem });
+        return;
+      }
+
+      setFeedback({
+        ok: true,
+        mensagem: `${res.ecoponto.codigo} (${res.ecoponto.nome}) publicado instantaneamente na visão do Cidadão e do Catador!`,
+      });
+      setNome('');
+      setBairro('');
+      setEndereco('');
+    } finally {
+      setEnviando(false);
     }
-
-    setFeedback({
-      ok: true,
-      mensagem: `${res.ecoponto.codigo} (${res.ecoponto.nome}) publicado instantaneamente na visão do Cidadão e do Catador!`,
-    });
-    setNome('');
-    setBairro('');
-    setEndereco('');
   };
 
   return (
@@ -198,10 +205,11 @@ export const GestaoView: React.FC = () => {
 
         <button
           type="submit"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 py-3 text-sm font-extrabold text-white hover:bg-slate-800 active:scale-[0.99] transition"
+          disabled={enviando}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 py-3 text-sm font-extrabold text-white hover:bg-slate-800 active:scale-[0.99] transition disabled:opacity-60"
         >
           <Building2 className="h-4 w-4 text-emerald-400" />
-          Publicar Ecoponto na Rede Municipal
+          {enviando ? 'Publicando...' : 'Publicar Ecoponto na Rede Municipal'}
         </button>
       </form>
 
