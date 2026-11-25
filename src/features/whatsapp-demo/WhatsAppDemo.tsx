@@ -1,151 +1,65 @@
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ChatShell, DateChip, Incoming, Outgoing, QuickReplies } from "./chat-kit";
-import { FLOW, resolveNext } from "./chat-flow";
-
-interface Entry {
-  from: "bot" | "user";
-  content: ReactNode;
-  time: string;
-}
-
-interface FlowState {
-  log: Entry[];
-  replies: string[];
-  step: string;
-  clock: number;
-}
-
-const makeTime = (clock: number) => {
-  const total = 9 * 60 + 12 + clock;
-  const h = Math.floor(total / 60) % 24;
-  const m = total % 60;
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-};
-
-const enterNode = (id: string, prev: FlowState, reply?: string): FlowState => {
-  const node = FLOW[id];
-  const log = [...prev.log];
-  let clock = prev.clock;
-  if (reply) {
-    log.push({ from: "user", content: reply, time: makeTime(clock++) });
-  }
-  for (const content of node.bot) {
-    log.push({ from: "bot", content, time: makeTime(clock++) });
-  }
-  return { log, replies: node.replies ?? [], step: id, clock };
-};
-
-const INITIAL: FlowState = enterNode("start", {
-  log: [],
-  replies: [],
-  step: "start",
-  clock: 0,
-});
+import { useEffect, useRef } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { Send } from 'lucide-react';
+import { useWhatsAppChatFlow } from './chat-flow';
+import { MessageBubble, QuickReplyBar, TypingIndicator, WhatsAppHeader } from './chat-kit';
 
 export function WhatsAppDemo() {
-  const [state, setState] = useState<FlowState>(INITIAL);
-  const [input, setInput] = useState("");
-  const mainRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
+  const { messages, isTyping, currentOptions, handleSelectOption, resetChat } = useWhatsAppChatFlow();
+  const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const el = mainRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [state]);
-
-  const onReply = (reply: string) => {
-    setState((prev) => {
-      const next = resolveNext(FLOW[prev.step], reply);
-      return enterNode(next, prev, reply);
-    });
-  };
-
-  const onSend = (e: FormEvent) => {
-    e.preventDefault();
-    const text = input.trim();
-    if (!text) return;
-    setInput("");
-    setState((prev) => {
-      const log = [...prev.log];
-      let clock = prev.clock;
-      log.push({ from: "user", content: text, time: makeTime(clock++) });
-      log.push({
-        from: "bot",
-        content: "Não entendi 🤔 Toque em uma das opções abaixo para continuar.",
-        time: makeTime(clock++),
-      });
-      return { ...prev, log, clock };
-    });
-  };
+    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages, isTyping]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: "8px 0 96px",
-        background: "#F7FAF2",
-        minHeight: "100%",
-      }}
-    >
-      <ChatShell
-        scrollRef={mainRef}
-        footer={
-          <form
-            onSubmit={onSend}
-            style={{ display: "flex", gap: 8, flex: 1 }}
-          >
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Mensagem"
-              aria-label="Mensagem"
-              style={{
-                flex: 1,
-                minWidth: 0,
-                border: "1px solid #D9E3CF",
-                borderRadius: 22,
-                padding: "11px 16px",
-                fontSize: 15,
-                fontFamily: "inherit",
-                background: "#fff",
-              }}
-            />
-            <button
-              type="submit"
-              style={{
-                border: 0,
-                borderRadius: 22,
-                padding: "11px 18px",
-                fontWeight: 800,
-                fontSize: 14,
-                fontFamily: "inherit",
-                background: "#123F23",
-                color: "#fff",
-                cursor: "pointer",
-              }}
-            >
-              Enviar
-            </button>
-          </form>
-        }
+    <div className="mx-auto flex h-[calc(100dvh-10.5rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-[#BDD3A7] bg-[#EFEAE2] shadow-sm">
+      <WhatsAppHeader
+        isTyping={isTyping}
+        onBack={() => navigate({ to: '/' })}
+        onReset={resetChat}
+      />
+
+      <div
+        className="flex-1 space-y-3 overflow-y-auto px-3 py-4"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgba(18,63,27,0.06) 1px, transparent 0)',
+          backgroundSize: '24px 24px',
+        }}
       >
-        <DateChip>Hoje</DateChip>
-        {state.log.map((entry, i) =>
-          entry.from === "bot" ? (
-            <Incoming key={i} time={entry.time}>
-              {entry.content}
-            </Incoming>
-          ) : (
-            <Outgoing key={i} time={entry.time}>
-              {entry.content}
-            </Outgoing>
-          )
-        )}
-        {state.replies.length > 0 && (
-          <QuickReplies width={88} items={state.replies} onSelect={onReply} />
-        )}
-      </ChatShell>
+        {messages.map((message) => (
+          <MessageBubble key={message.id} message={message} />
+        ))}
+        {isTyping && <TypingIndicator />}
+        <div ref={endRef} />
+      </div>
+
+      <div className="border-t border-[#BDD3A7]/70 bg-[#F7F7F7] px-3 py-3">
+        <QuickReplyBar options={currentOptions} onSelect={handleSelectOption} disabled={isTyping} />
+
+        <div className="mt-3 flex items-center gap-2">
+          <div className="flex h-11 flex-1 items-center rounded-full border border-[#D1D5DB] bg-white px-4 text-sm text-[#667085]">
+            Digite uma mensagem
+          </div>
+          <button
+            type="button"
+            aria-label="Enviar mensagem"
+            disabled
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#123F1B] text-white opacity-60"
+          >
+            <Send className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={resetChat}
+            className="rounded-full border border-[#123F1B] px-3 py-2 text-xs font-semibold text-[#123F1B] transition hover:bg-[#90AD2E]/15"
+          >
+            Reiniciar
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
