@@ -1,6 +1,6 @@
 # CIRCULA
 
-O que circula transforma.
+A transformação começa por você!
 
 **CIRCULA** é uma plataforma Mobile PWA de economia circular desenvolvida durante o **Hackathon Estação Tecnológica 2026** (Quixadá/CE). O nome une **circularidade e movimento**, traduzindo uma rede viva onde **materiais recicláveis, pessoas, renda e benefícios circulam** de forma integrada entre cidadãos, catadores, parceiros locais e o poder público.
 
@@ -183,4 +183,4 @@ circula/
 
 Desenvolvido para transformar a gestão de resíduos sólidos e valorizar quem faz a reciclagem acontecer em Quixadá e no Sertão Central.
 
-CIRCULA: O que circula transforma.
+CIRCULA: A transformação começa por você!
