@@ -4,6 +4,8 @@ O que circula transforma.
 
 **CIRCULA** é uma plataforma Mobile PWA de economia circular desenvolvida durante o **Hackathon Estação Tecnológica 2026** (Quixadá/CE). O nome une **circularidade e movimento**, traduzindo uma rede viva onde **materiais recicláveis, pessoas, renda e benefícios circulam** de forma integrada entre cidadãos, catadores, parceiros locais e o poder público.
 
+**Repositório:** [github.com/AnneBento/circula](https://github.com/AnneBento/circula)
+
 ## O Problema e Nossa Solução
 
 Com a transição do antigo lixão de Quixadá para a nova usina de processamento via Parceria Público-Privada (PPP), o município enfrenta um triplo desafio **social, ambiental e financeiro**:
@@ -128,16 +130,26 @@ circula/
    npm install
    ```
 
-2. **Configure as variáveis de ambiente:**
-   Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`:
+2. **Configure as variáveis de ambiente (Supabase):**
+   Copie o exemplo e preencha com as chaves do seu projeto (em **Project Settings → API** no Supabase):
 
-   ```env
-   VITE_SUPABASE_URL=https://sua-instancia.supabase.co
-   VITE_SUPABASE_ANON_KEY=sua-chave-anon-publica
+   ```bash
+   cp .env.example .env.local
    ```
 
+   ```env
+   VITE_SUPABASE_URL=https://SEU-PROJETO.supabase.co
+   VITE_SUPABASE_ANON_KEY=SUA_CHAVE_ANON_PUBLICA
+   ```
+
+   > Sem `.env.local`, o app roda em **modo demo local** (dados em memória). `.env.local` está no `.gitignore`; use apenas a chave **anon public**.
+
 3. **Configure o Banco de Dados no Supabase:**
-   Acesse o **SQL Editor** no painel do seu projeto Supabase e execute o script `supabase/schema.sql` para criar as tabelas (`ecopontos`, `cidadaos`, `depositos` e `vouchers`) e os dados iniciais de demonstração.
+   No painel do projeto, abra o **SQL Editor** e execute o script [`supabase/schema.sql`](./supabase/schema.sql). Ele cria:
+   - tabelas: `ecopontos`, `cidadaos`, `depositos`, `vouchers`, `resgates_vouchers`;
+   - constraints/RLS de demonstração e migrações idempotentes;
+   - seeds de dados demo;
+   - publicação no **Supabase Realtime** (`ecopontos`, `cidadaos`, `depositos`, `resgates_vouchers`).
 
 4. **Inicie o servidor de desenvolvimento:**
 
@@ -145,7 +157,7 @@ circula/
    npm run dev
    ```
 
-   Acesse `http://localhost:5173` no navegador (recomenda-se ativar o modo de visualização mobile no DevTools ou acessar pelo smartphone na mesma rede para instalar o PWA).
+   Acesse `http://localhost:5173`. Com Supabase configurado, o painel de Gestão exibe **Supabase Realtime ON**; cadastros, entregas e resgates persistem após reload.
 
 ## Conformidade com o Edital (Hackathon Estação Tecnológica 2026)
 
