@@ -120,14 +120,49 @@ insert into public.cidadaos (codigo_entrega, nome_ficticio, bairro, pontos, nive
   ('QXD-8841', 'Carlos Eduardo (Demo)', 'Campo Novo', 980, 4, 44.0)
 on conflict (codigo_entrega) do nothing;
 
-insert into public.vouchers (titulo, parceiro, categoria, desconto, nivel_minimo, custo_pontos) values
-  ('15% OFF em Livros e Papelaria', 'Livraria Monólitos', 'Comércio Local', '15% OFF', 1, 100),
-  ('Ingresso Meia-Entrada Cultural', 'Cine Teatro Quixadá', 'Entretenimento', '50% OFF', 2, 250),
-  ('Bolsa 30% Curso Técnico & TI', 'Instituto Educa Sertão', 'Educação', '30% OFF', 2, 300),
-  ('Vale-Feira Produtos Regionais', 'Associação Feira Limpa', 'Comércio Local', 'R$ 25,00', 3, 500),
-  ('IPTU Verde Residencial', 'Prefeitura de Quixadá • AMMA', 'Comércio Local', '30% OFF', 4, 750),
-  ('Viagem Grátis no Uber', 'Crédito Uber / Mobilidade Urbana', 'Entretenimento', 'R$ 20,00', 5, 850)
-on conflict do nothing;
+insert into public.vouchers (titulo, parceiro, categoria, desconto, nivel_minimo, custo_pontos)
+select v.titulo, v.parceiro, v.categoria, v.desconto, v.nivel_minimo, v.custo_pontos
+from (
+  values
+    ('15% OFF em Livros e Papelaria', 'Livraria Monólitos', 'Comércio Local', '15% OFF', 1, 100),
+    ('Ingresso Meia-Entrada Cultural', 'Cine Teatro Quixadá', 'Entretenimento', '50% OFF', 2, 250),
+    ('Bolsa 30% Curso Técnico & TI', 'Instituto Educa Sertão', 'Educação', '30% OFF', 2, 300),
+    ('Vale-Feira Produtos Regionais', 'Associação Feira Limpa', 'Comércio Local', 'R$ 25,00', 3, 500),
+    ('IPTU Verde Residencial', 'Prefeitura de Quixadá • AMMA', 'Comércio Local', '30% OFF', 4, 750),
+    ('Viagem Grátis no Uber', 'Crédito Uber / Mobilidade Urbana', 'Entretenimento', 'R$ 20,00', 5, 850)
+) as v(titulo, parceiro, categoria, desconto, nivel_minimo, custo_pontos)
+where not exists (
+  select 1 from public.vouchers pv where pv.titulo = v.titulo and pv.parceiro = v.parceiro
+);
 
 -- Alinha o cidadão demo com a nova escala de 5 níveis (executa só se ainda estiver no nível antigo)
 update public.cidadaos set nivel = 4 where codigo_entrega = 'QXD-8841' and nivel = 3;
+
+-- Depósitos demo (idempotentes por ID fixo)
+insert into public.depositos (
+  id, cidadao_id, ecoponto_id, catador_operador, categoria_material,
+  peso_kg, pontos_gerados, renda_catador_brl, economia_ppp_brl, inspecao_limpa, created_at
+)
+select
+  '00000000-0000-0000-0000-000000000d01'::uuid,
+  c.id, e.id,
+  'Seu Antônio (Associação Quixadá Limpa)',
+  'Cobre/Fios', 2.5, 200, 86.25, 4.63, true,
+  now() - interval '45 minutes'
+from public.cidadaos c, public.ecopontos e
+where c.codigo_entrega = 'QXD-2026' and e.codigo = 'QXD-01'
+on conflict (id) do nothing;
+
+insert into public.depositos (
+  id, cidadao_id, ecoponto_id, catador_operador, categoria_material,
+  peso_kg, pontos_gerados, renda_catador_brl, economia_ppp_brl, inspecao_limpa, created_at
+)
+select
+  '00000000-0000-0000-0000-000000000d02'::uuid,
+  c.id, e.id,
+  'Dona Francisca (Cooperativa Sertão)',
+  'Plástico Limpo', 11.0, 220, 26.4, 10.45, true,
+  now() - interval '120 minutes'
+from public.cidadaos c, public.ecopontos e
+where c.codigo_entrega = 'QXD-8841' and e.codigo = 'QXD-03'
+on conflict (id) do nothing;
