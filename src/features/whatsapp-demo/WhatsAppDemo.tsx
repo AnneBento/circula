@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { ChatShell, DateChip, Incoming, Outgoing, QuickReplies } from "./chat-kit";
 import { FLOW, resolveNext } from "./chat-flow";
-import { Cadastro } from "./Cadastro";
-import { Rotas } from "./Rotas";
-import { Coleta } from "./Coleta";
-import { Pontos } from "./Pontos";
 
 interface Entry {
   from: "bot" | "user";
@@ -46,13 +42,6 @@ const INITIAL: FlowState = enterNode("start", {
   clock: 0,
 });
 
-const TELAS = [
-  ["1 · Cadastro e rota", Cadastro],
-  ["2 · Rotas e dias de coleta", Rotas],
-  ["3 · Confirmar coleta e pontos", Coleta],
-  ["4 · Pontuação e vantagens", Pontos],
-] as const;
-
 export function WhatsAppDemo() {
   const [state, setState] = useState<FlowState>(INITIAL);
   const [input, setInput] = useState("");
@@ -92,40 +81,12 @@ export function WhatsAppDemo() {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 32,
-        padding: "32px 32px 96px",
+        justifyContent: "center",
+        padding: "8px 0 96px",
         background: "#F7FAF2",
-        minHeight: "100vh",
+        minHeight: "100%",
       }}
     >
-      <header style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <img src="/logo.png" alt="CIRCULA" width={44} height={48} />
-        <div>
-          <h2
-            style={{
-              fontFamily: "Nunito, sans-serif",
-              fontSize: 20,
-              color: "#123F23",
-              margin: 0,
-            }}
-          >
-            Bot Circula · protótipo interativo
-          </h2>
-          <p
-            style={{
-              fontFamily: "Nunito, sans-serif",
-              fontSize: 13,
-              color: "#5F6F5A",
-              margin: "2px 0 0",
-            }}
-          >
-            Toque nas respostas ou digite uma mensagem · dados fictícios
-          </p>
-        </div>
-      </header>
-
       <ChatShell
         scrollRef={mainRef}
         footer={
@@ -185,44 +146,6 @@ export function WhatsAppDemo() {
           <QuickReplies width={88} items={state.replies} onSelect={onReply} />
         )}
       </ChatShell>
-
-      <section style={{ width: "100%" }}>
-        <h3
-          style={{
-            fontFamily: "Nunito, sans-serif",
-            fontSize: 14,
-            color: "#123F23",
-            textAlign: "center",
-            margin: "0 0 16px",
-          }}
-        >
-          Telas de referência (fixtures)
-        </h3>
-        <div
-          style={{
-            display: "flex",
-            gap: 32,
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-        >
-          {TELAS.map(([titulo, Tela]) => (
-            <section key={titulo}>
-              <h2
-                style={{
-                  fontFamily: "Nunito, sans-serif",
-                  fontSize: 14,
-                  color: "#123F23",
-                  marginBottom: 8,
-                }}
-              >
-                {titulo}
-              </h2>
-              <Tela />
-            </section>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
