@@ -1,32 +1,28 @@
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 
 const SHADOW = "0 1px 1px rgba(18,63,35,.12)";
 const FONT = "Nunito, system-ui, sans-serif";
 
 function Logo() {
   return (
-    <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
-      <circle
-        cx="50"
-        cy="50"
-        r="34"
-        fill="none"
-        stroke="#1F6B4A"
-        strokeWidth="14"
-        strokeLinecap="round"
-        pathLength="100"
-        strokeDasharray="72 28"
-        transform="rotate(50 50 50)"
-      />
-      <path
-        d="M0-20A24 24 0 0 1 0 20A24 24 0 0 1 0-20Z"
-        fill="#8FAE2E"
-        transform="translate(82 50) rotate(35)"
-      />
-    </svg>
+    <img
+      src="/logo.png"
+      alt="CIRCULA"
+      width={30}
+      height={30}
+      style={{ objectFit: "contain" }}
+    />
   );
 }
-export function ChatShell({ children }: { children: ReactNode }) {
+export function ChatShell({
+  children,
+  scrollRef,
+  footer,
+}: {
+  children: ReactNode;
+  scrollRef?: RefObject<HTMLElement | null>;
+  footer?: ReactNode;
+}) {
   return (
     <div
       style={{
@@ -77,6 +73,7 @@ export function ChatShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main
+        ref={scrollRef}
         style={{
           flex: 1,
           minHeight: 0,
@@ -84,7 +81,7 @@ export function ChatShell({ children }: { children: ReactNode }) {
           display: "flex",
           flexDirection: "column",
           gap: 8,
-          overflow: "hidden",
+          overflowY: "auto",
         }}
       >
         {children}
@@ -98,21 +95,23 @@ export function ChatShell({ children }: { children: ReactNode }) {
           flex: "none",
         }}
       >
-        <input
-          type="text"
-          placeholder="Mensagem"
-          aria-label="Mensagem"
-          style={{
-            flex: 1,
-            minWidth: 0,
-            border: "1px solid #D9E3CF",
-            borderRadius: 22,
-            padding: "11px 16px",
-            fontSize: 15,
-            fontFamily: "inherit",
-            background: "#fff",
-          }}
-        />
+        {footer ?? (
+          <input
+            type="text"
+            placeholder="Mensagem"
+            aria-label="Mensagem"
+            style={{
+              flex: 1,
+              minWidth: 0,
+              border: "1px solid #D9E3CF",
+              borderRadius: 22,
+              padding: "11px 16px",
+              fontSize: 15,
+              fontFamily: "inherit",
+              background: "#fff",
+            }}
+          />
+        )}
       </footer>
       <div
         style={{
