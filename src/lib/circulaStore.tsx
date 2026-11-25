@@ -53,22 +53,13 @@ const INITIAL_ECOPONTOS: Ecoponto[] = [
 const INITIAL_CIDADAOS: Cidadao[] = [
   {
     id: 'cid-1',
-    codigo_entrega: 'QXD-2026',
-    nome_ficticio: 'Mariana Silva (Demo)',
+    codigo_entrega: '12345',
+    nome_ficticio: 'Crislaynne',
     bairro: 'Centro',
-    pontos: 420,
-    nivel: 2,
-    total_kg_entregue: 18.5,
-  },
-  {
-    id: 'cid-2',
-    codigo_entrega: 'QXD-8841',
-    nome_ficticio: 'Carlos Eduardo (Demo)',
-    bairro: 'Campo Novo',
-    pontos: 980,
-    nivel: 4,
-    total_kg_entregue: 44.0,
-  },
+    pontos: 800,
+    nivel: 3,
+    total_kg_entregue: 40.5,
+  }
 ];
 
 const INITIAL_DEPOSITOS: Deposito[] = [
