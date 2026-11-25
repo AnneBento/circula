@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   CheckCircle2,
@@ -16,25 +16,33 @@ const CATEGORIAS = Object.keys(TABELA_MATERIAIS) as MaterialCategoria[];
 export const CatadorView: React.FC = () => {
   const { ecopontos, depositos, registrarEntrega } = useCircula();
 
-  const [codigoCidadao, setCodigoCidadao] = useState('12345');
-  const [ecopontoId, setEcopontoId] = useState(ecopontos[0]?.id || 'eco-1');
+  const [codigoCidadao, setCodigoCidadao] = useState('QXD-2026');
+  const [ecopontoId, setEcopontoId] = useState(ecopontos[0]?.id || '');
   const [categoria, setCategoria] = useState<MaterialCategoria>('Cobre/Fios');
   const [pesoKg, setPesoKg] = useState('2.5');
   const [inspecaoLimpa, setInspecaoLimpa] = useState(true);
   const [catadorOperador, setCatadorOperador] = useState(
-    'CLOVIS'
+    'Seu Antônio (Associação Quixadá Limpa)'
   );
   const [enviando, setEnviando] = useState(false);
   const [resultado, setResultado] = useState<{ ok: boolean; mensagem: string } | null>(
     null
   );
 
+  useEffect(() => {
+    if (!ecopontos.length) return;
+    if (!ecopontos.some((e) => e.id === ecopontoId)) {
+      setEcopontoId(ecopontos[0].id);
+    }
+  }, [ecopontos, ecopontoId]);
+
   const pesoNumerico = Math.max(0, parseFloat(pesoKg) || 0);
   const regraAtual = TABELA_MATERIAIS[categoria];
   const previsaoRenda = (pesoNumerico * regraAtual.precoCatadorKg).toFixed(2);
   const previsaoPontos = Math.round(pesoNumerico * regraAtual.pontosPorKg);
 
-  const rendaTotalAcumulada = depositos.reduce((acc, d) => acc + d.renda_catador_brl, 0);
+  const depositosEcoponto = depositos.filter((d) => d.ecoponto_id === ecopontoId);
+  const rendaTotalAcumulada = depositosEcoponto.reduce((acc, d) => acc + d.renda_catador_brl, 0);
 
   const handleValidar = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,29 +74,30 @@ export const CatadorView: React.FC = () => {
   return (
     <div className="space-y-6 pb-24">
       {/* Resumo de Dignidade e Renda Direta */}
-      <div className="rounded-3xl bg-slate-900 p-6 text-white shadow-lg">
+      <div className="rounded-3xl bg-[#123F1B] p-6 text-white shadow-lg">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#90AD2E]">
               Terminal de Triagem Limpa • Sem Atravessadores
             </p>
             <h2 className="mt-1 text-xl font-bold">Validação Presencial</h2>
+            <p className="mt-1 text-[11px] text-[#BDD3A7]">Métricas do ecoponto selecionado</p>
           </div>
-          <div className="rounded-2xl bg-emerald-500/20 p-3 text-emerald-300">
+          <div className="rounded-2xl bg-[#90AD2E]/20 p-3 text-[#90AD2E]">
             <Coins className="h-7 w-7" />
           </div>
         </div>
 
         <div className="mt-5 grid grid-cols-2 gap-3">
           <div className="rounded-2xl bg-white/10 p-3.5">
-            <span className="text-xs text-slate-300">Renda Direta Gerada</span>
-            <p className="mt-1 text-2xl font-black text-emerald-400">
+            <span className="text-xs text-[#BDD3A7]">Renda Direta Gerada</span>
+            <p className="mt-1 text-2xl font-black text-[#90AD2E]">
               R$ {rendaTotalAcumulada.toFixed(2)}
             </p>
           </div>
           <div className="rounded-2xl bg-white/10 p-3.5">
-            <span className="text-xs text-slate-300">Entregas Auditadas</span>
-            <p className="mt-1 text-2xl font-black text-white">{depositos.length}</p>
+            <span className="text-xs text-[#BDD3A7]">Entregas Auditadas</span>
+            <p className="mt-1 text-2xl font-black text-white">{depositosEcoponto.length}</p>
           </div>
         </div>
       </div>
@@ -98,8 +107,8 @@ export const CatadorView: React.FC = () => {
         onSubmit={handleValidar}
         className="space-y-4 rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-xs"
       >
-        <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
-          <UserCheck className="h-5 w-5 text-emerald-600" />
+        <h3 className="flex items-center gap-2 text-base font-bold text-[#123F1B] dark:text-slate-100">
+          <UserCheck className="h-5 w-5 text-[#90AD2E]" />
           Registrar Recebimento no Ecoponto
         </h3>
 
@@ -112,7 +121,7 @@ export const CatadorView: React.FC = () => {
               type="text"
               value={codigoCidadao}
               onChange={(e) => setCodigoCidadao(e.target.value)}
-              placeholder="Ex: 12345"
+              placeholder="Ex: QXD-2026"
               className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 font-mono text-sm font-bold uppercase focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
               required
             />
@@ -223,13 +232,13 @@ export const CatadorView: React.FC = () => {
         </label>
 
         {/* Simulação em tempo real */}
-        <div className="flex items-center justify-between rounded-2xl bg-emerald-950 px-4 py-3 text-white">
+        <div className="flex items-center justify-between rounded-2xl bg-[#123F1B] px-4 py-3 text-white">
           <div>
-            <span className="block text-[11px] text-emerald-300">Rendimento Catador</span>
-            <span className="text-lg font-black">R$ {previsaoRenda}</span>
+            <span className="block text-[11px] text-[#BDD3A7]">Rendimento Catador</span>
+            <span className="text-lg font-black text-[#90AD2E]">R$ {previsaoRenda}</span>
           </div>
           <div className="text-right">
-            <span className="block text-[11px] text-emerald-300">Crédito Cidadão</span>
+            <span className="block text-[11px] text-[#BDD3A7]">Crédito Cidadão</span>
             <span className="text-lg font-black">+{previsaoPontos} pts</span>
           </div>
         </div>
@@ -260,31 +269,36 @@ export const CatadorView: React.FC = () => {
 
       {/* Histórico Auditável */}
       <section className="space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Últimas Pesagens Auditadas
+        <h3 className="text-sm font-bold uppercase tracking-wider text-[#8D9864] dark:text-slate-400">
+          Últimas pesagens neste ecoponto
         </h3>
         <div className="space-y-2.5">
-          {depositos.slice(0, 5).map((dep) => (
+          {depositosEcoponto.slice(0, 5).map((dep) => (
             <div
               key={dep.id}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3.5 text-xs"
+              className="flex items-center justify-between rounded-2xl border border-[#BDD3A7]/60 dark:border-slate-700 bg-white dark:bg-slate-900 p-3.5 text-xs"
             >
               <div>
-                <span className="font-bold text-slate-900 dark:text-slate-100">
+                <span className="font-bold text-[#123F1B] dark:text-slate-100">
                   {dep.categoria_material} • {dep.peso_kg} kg
                 </span>
-                <p className="text-slate-500 dark:text-slate-400">{dep.catador_operador}</p>
+                <p className="text-[#8D9864] dark:text-slate-400">{dep.catador_operador}</p>
               </div>
               <div className="text-right">
-                <span className="block font-extrabold text-emerald-700">
+                <span className="block font-extrabold text-[#123F1B] dark:text-[#90AD2E]">
                   +R$ {dep.renda_catador_brl.toFixed(2)}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />+{dep.pontos_gerados} pts
+                <span className="inline-flex items-center gap-1 text-[11px] text-[#8D9864] dark:text-slate-400">
+                  <CheckCircle2 className="h-3 w-3 text-[#90AD2E]" />+{dep.pontos_gerados} pts
                 </span>
               </div>
             </div>
           ))}
+          {depositosEcoponto.length === 0 && (
+            <p className="rounded-2xl border border-dashed border-[#BDD3A7] p-4 text-center text-xs text-[#8D9864] dark:border-slate-700 dark:text-slate-400">
+              Nenhuma pesagem registrada neste ecoponto ainda.
+            </p>
+          )}
         </div>
       </section>
     </div>

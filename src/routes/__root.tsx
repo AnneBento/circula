@@ -8,7 +8,6 @@ import {
   LogIn,
   MapPin,
   Phone,
-  Recycle,
   Scale,
   Sparkles,
   User,
@@ -120,8 +119,8 @@ function RootLayout() {
           <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
             {/* Logo CIRCULA */}
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#123F1B] text-[#BDD3A7] shadow-xs transition group-hover:scale-105">
-                <Recycle className="h-5 w-5 text-[#90AD2E]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white shadow-xs transition group-hover:scale-105 overflow-hidden">
+                <img src="/logo.png" alt="Logo CIRCULA" className="h-9 w-9 object-contain" />
               </div>
               <div>
                 <span className="block text-base font-black tracking-tight text-[#123F1B] leading-none">
