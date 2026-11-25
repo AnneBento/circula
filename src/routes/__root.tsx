@@ -7,6 +7,7 @@ import {
   Landmark,
   LogIn,
   MapPin,
+  MessageCircle,
   Phone,
   Scale,
   Sparkles,
@@ -475,6 +476,13 @@ function RootLayout() {
             >
               <Landmark className="h-5 w-5" />
               Gestão
+            </Link>
+            <Link
+              to="/whatsapp"
+              className="flex flex-col items-center gap-0.5 px-2.5 py-1 text-[11px] font-bold text-[#8D9864] [&.active]:text-[#123F1B]"
+            >
+              <MessageCircle className="h-5 w-5" />
+              WhatsApp
             </Link>
           </div>
         </nav>

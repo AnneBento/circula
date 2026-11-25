@@ -16,7 +16,7 @@ export function WhatsAppDemo() {
       style={{
         display: "flex",
         gap: 32,
-        padding: 32,
+        padding: "32px 32px 96px",
         flexWrap: "wrap",
         justifyContent: "center",
         background: "#F7FAF2",
