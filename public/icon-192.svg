@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="42" fill="#123F1B"/>
+  <circle cx="96" cy="80" r="34" fill="#90AD2E"/>
+  <text x="96" y="103" text-anchor="middle" font-size="67" font-family="Arial,sans-serif" font-weight="700" fill="#123F1B">C</text>
+  <text x="96" y="149" text-anchor="middle" font-size="21" font-family="Arial,sans-serif" font-weight="700" fill="#BDD3A7">CIRCULA</text>
+</svg>
