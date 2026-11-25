@@ -202,6 +202,22 @@ interface CirculaContextType {
 
 const CirculaContext = createContext<CirculaContextType | null>(null);
 
+function proximoCodigoEcoponto(ecopontos: Ecoponto[], reservado: Set<string> = new Set()) {
+  const max = ecopontos.reduce((acc, eco) => {
+    const m = eco.codigo.match(/^QXD-(\d+)$/i);
+    return m ? Math.max(acc, Number(m[1])) : acc;
+  }, 0);
+  let n = max + 1;
+  let codigo = `QXD-${String(n).padStart(2, '0')}`;
+  const usados = new Set(ecopontos.map((e) => e.codigo.toUpperCase()));
+  reservado.forEach((c) => usados.add(c.toUpperCase()));
+  while (usados.has(codigo.toUpperCase())) {
+    n += 1;
+    codigo = `QXD-${String(n).padStart(2, '0')}`;
+  }
+  return codigo;
+}
+
 export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [ecopontos, setEcopontos] = useState<Ecoponto[]>(INITIAL_ECOPONTOS);
   const [cidadaos, setCidadaos] = useState<Cidadao[]>(INITIAL_CIDADAOS);
@@ -471,10 +487,9 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const cadastrarEcoponto = async (
     input: NovoEcopontoInput
   ): Promise<{ ok: boolean; mensagem: string; ecoponto?: Ecoponto }> => {
-    const proximoNumero = String(ecopontos.length + 1).padStart(2, '0');
-    const novo: Ecoponto = {
+    const montarEcoponto = (codigo: string): Ecoponto => ({
       id: `eco-${Date.now()}`,
-      codigo: `QXD-${proximoNumero}`,
+      codigo,
       nome: input.nome,
       bairro: input.bairro,
       endereco: input.endereco,
@@ -483,35 +498,56 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
       capacidade_atual_kg: 0,
       capacidade_maxima_kg: input.capacidadeMaximaKg || 500,
       ativo: true,
-    };
+    });
 
     if (supabaseAtivo && supabase) {
-      try {
-        const { data, error } = await supabase
-          .from('ecopontos')
-          .insert({
-            codigo: novo.codigo,
-            nome: novo.nome,
-            bairro: novo.bairro,
-            endereco: novo.endereco,
-            horario: novo.horario,
-            capacidade_maxima_kg: novo.capacidade_maxima_kg,
-            ativo: true,
-          })
-          .select()
-          .single();
-        if (error) throw error;
-        if (data) {
-          const ecoponto = data as Ecoponto;
-          setEcopontos((prev) => [...prev, ecoponto]);
-          return { ok: true, mensagem: 'Ecoponto cadastrado com sucesso.', ecoponto };
+      const tentados = new Set<string>();
+      for (let tentativa = 0; tentativa < 2; tentativa += 1) {
+        const codigo = proximoCodigoEcoponto(ecopontos, tentados);
+        tentados.add(codigo);
+        const novo = montarEcoponto(codigo);
+        try {
+          const { data, error } = await supabase
+            .from('ecopontos')
+            .insert({
+              codigo: novo.codigo,
+              nome: novo.nome,
+              bairro: novo.bairro,
+              endereco: novo.endereco,
+              horario: novo.horario,
+              capacidade_maxima_kg: novo.capacidade_maxima_kg,
+              ativo: true,
+            })
+            .select()
+            .single();
+          if (error) {
+            if ((error as { code?: string }).code === '23505' && tentativa === 0) continue;
+            if ((error as { code?: string }).code === '23505') {
+              return { ok: false, mensagem: 'Já existe um ecoponto com esse código. Tente novamente.' };
+            }
+            throw error;
+          }
+          if (data) {
+            const ecoponto = data as Ecoponto;
+            setEcopontos((prev) => [...prev, ecoponto]);
+            return { ok: true, mensagem: 'Ecoponto cadastrado com sucesso.', ecoponto };
+          }
+          return { ok: false, mensagem: 'Não foi possível cadastrar o ecoponto. Tente novamente.' };
+        } catch (error) {
+          if ((error as { code?: string }).code === '23505') {
+            return { ok: false, mensagem: 'Já existe um ecoponto com esse código. Tente novamente.' };
+          }
+          return {
+            ok: false,
+            mensagem: 'Não foi possível cadastrar o ecoponto. Verifique a conexão e tente novamente.',
+          };
         }
-        return { ok: false, mensagem: 'Não foi possível cadastrar o ecoponto. Tente novamente.' };
-      } catch {
-        return { ok: false, mensagem: 'Não foi possível cadastrar o ecoponto. Verifique a conexão e tente novamente.' };
       }
+      return { ok: false, mensagem: 'Já existe um ecoponto com esse código. Tente novamente.' };
     }
 
+    const codigo = proximoCodigoEcoponto(ecopontos);
+    const novo = montarEcoponto(codigo);
     setEcopontos((prev) => [...prev, novo]);
     return { ok: true, mensagem: 'Ecoponto cadastrado com sucesso.', ecoponto: novo };
   };
