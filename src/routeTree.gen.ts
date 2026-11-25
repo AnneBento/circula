@@ -14,6 +14,7 @@ import { Route as CatadorRouteImport } from './routes/catador'
 import { Route as CidadaoRouteImport } from './routes/cidadao'
 import { Route as EcopontosRouteImport } from './routes/ecopontos'
 import { Route as GestaoRouteImport } from './routes/gestao'
+import { Route as WhatsappRouteImport } from './routes/whatsapp'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const GestaoRoute = GestaoRouteImport.update({
   path: '/gestao',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WhatsappRoute = WhatsappRouteImport.update({
+  id: '/whatsapp',
+  path: '/whatsapp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/cidadao': typeof CidadaoRoute
   '/ecopontos': typeof EcopontosRoute
   '/gestao': typeof GestaoRoute
+  '/whatsapp': typeof WhatsappRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/cidadao': typeof CidadaoRoute
   '/ecopontos': typeof EcopontosRoute
   '/gestao': typeof GestaoRoute
+  '/whatsapp': typeof WhatsappRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,22 @@ export interface FileRoutesById {
   '/cidadao': typeof CidadaoRoute
   '/ecopontos': typeof EcopontosRoute
   '/gestao': typeof GestaoRoute
+  '/whatsapp': typeof WhatsappRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao'
+  fullPaths:
+    '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao' | '/whatsapp'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao'
-  id: '__root__' | '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao'
+  to: '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao' | '/whatsapp'
+  id:
+    | '__root__'
+    | '/'
+    | '/catador'
+    | '/cidadao'
+    | '/ecopontos'
+    | '/gestao'
+    | '/whatsapp'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +94,7 @@ export interface RootRouteChildren {
   CidadaoRoute: typeof CidadaoRoute
   EcopontosRoute: typeof EcopontosRoute
   GestaoRoute: typeof GestaoRoute
+  WhatsappRoute: typeof WhatsappRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +134,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GestaoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/whatsapp': {
+      id: '/whatsapp'
+      path: '/whatsapp'
+      fullPath: '/whatsapp'
+      preLoaderRoute: typeof WhatsappRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   CidadaoRoute: CidadaoRoute,
   EcopontosRoute: EcopontosRoute,
   GestaoRoute: GestaoRoute,
+  WhatsappRoute: WhatsappRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
