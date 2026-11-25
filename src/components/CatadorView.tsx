@@ -16,13 +16,13 @@ const CATEGORIAS = Object.keys(TABELA_MATERIAIS) as MaterialCategoria[];
 export const CatadorView: React.FC = () => {
   const { ecopontos, depositos, registrarEntrega } = useCircula();
 
-  const [codigoCidadao, setCodigoCidadao] = useState('QXD-2026');
+  const [codigoCidadao, setCodigoCidadao] = useState('12345');
   const [ecopontoId, setEcopontoId] = useState(ecopontos[0]?.id || 'eco-1');
   const [categoria, setCategoria] = useState<MaterialCategoria>('Cobre/Fios');
   const [pesoKg, setPesoKg] = useState('2.5');
   const [inspecaoLimpa, setInspecaoLimpa] = useState(true);
   const [catadorOperador, setCatadorOperador] = useState(
-    'Seu Antônio (Associação Quixadá Limpa)'
+    'CLOVIS'
   );
   const [enviando, setEnviando] = useState(false);
   const [resultado, setResultado] = useState<{ ok: boolean; mensagem: string } | null>(
@@ -112,7 +112,7 @@ export const CatadorView: React.FC = () => {
               type="text"
               value={codigoCidadao}
               onChange={(e) => setCodigoCidadao(e.target.value)}
-              placeholder="Ex: QXD-2026"
+              placeholder="Ex: 12345"
               className="mt-1 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 font-mono text-sm font-bold uppercase focus:border-circula-lime focus:outline-none dark:[color-scheme:dark]"
               required
             />

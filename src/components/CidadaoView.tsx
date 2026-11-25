@@ -6,9 +6,7 @@ import {
   Copy,
   Gift,
   MapPin,
-  QrCode,
   Recycle,
-  Sparkles,
   Ticket,
 } from 'lucide-react';
 import { useCircula } from '../lib/circulaStore';
@@ -41,16 +39,17 @@ export const CidadaoView: React.FC = () => {
     setTimeout(() => setCopiado(false), 2000);
   };
 
-  const handleResgatar = async (id: string) => {
-    const res = await resgatarVoucher(id);
+  const handleResgatar = (id: string) => {
+    const res = resgatarVoucher(id);
     setFeedbackVoucher(res);
+    setTimeout(() => setFeedbackVoucher(null), 4000);
   };
 
   return (
     <div className="space-y-6 pb-24">
       {/* Seletor rápido de perfil demo */}
-      <div className="flex items-center justify-between gap-2 rounded-2xl bg-white dark:bg-slate-900 p-3 shadow-xs border border-slate-200/80 dark:border-slate-700/80">
-        <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Perfil Demo (LGPD):</span>
+      <div className="flex items-center justify-between gap-2 rounded-2xl bg-white p-3 shadow-xs border border-[#BDD3A7]">
+        <span className="text-xs font-medium text-[#8D9864]">Perfil Demo (LGPD):</span>
         <div className="flex gap-1.5">
           {cidadaos.map((c) => (
             <button
@@ -58,8 +57,8 @@ export const CidadaoView: React.FC = () => {
               onClick={() => selecionarCidadao(c.codigo_entrega)}
               className={`rounded-xl px-2.5 py-1 text-xs font-semibold transition ${
                 c.codigo_entrega === cidadaoAtivo.codigo_entrega
-                  ? 'bg-circula-lime text-circula-dark shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                  ? 'bg-[#123F1B] text-white shadow-xs'
+                  : 'bg-[#BDD3A7]/35 text-[#123F1B] hover:bg-[#BDD3A7]/60'
               }`}
             >
               {c.codigo_entrega}
@@ -72,25 +71,20 @@ export const CidadaoView: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${infoNivel.cor} p-6 text-white shadow-lg`}
+        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#123F1B] via-[#275120] to-[#8D9864] p-6 text-white shadow-lg"
       >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-100">
-              Carteira Circular • Quixadá/CE
-            </p>
-            <h2 className="mt-1 text-xl font-bold">{cidadaoAtivo.nome_ficticio}</h2>
-            <p className="text-xs text-emerald-50/90">Bairro {cidadaoAtivo.bairro}</p>
-          </div>
-          <div className="rounded-2xl bg-white/15 p-3 backdrop-blur-xs">
-            <QrCode className="h-8 w-8 text-white" />
-          </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#BDD3A7]">
+            Carteira Circular • Quixadá/CE
+          </p>
+          <h2 className="mt-1 text-xl font-bold">{cidadaoAtivo.nome_ficticio}</h2>
+          <p className="text-xs text-[#BDD3A7]/90">Bairro {cidadaoAtivo.bairro}</p>
         </div>
 
         {/* Código de Entrega Rápido */}
-        <div className="mt-5 flex items-center justify-between rounded-2xl bg-black/20 px-4 py-3 backdrop-blur-xs">
+        <div className="mt-5 flex items-center justify-between rounded-2xl bg-black/25 px-4 py-3 backdrop-blur-xs border border-[#BDD3A7]/20">
           <div>
-            <span className="block text-[11px] uppercase tracking-wider text-emerald-100">
+            <span className="block text-[11px] uppercase tracking-wider text-[#BDD3A7]">
               Código de Entrega no Ecoponto
             </span>
             <span className="font-mono text-2xl font-black tracking-widest">
@@ -99,11 +93,11 @@ export const CidadaoView: React.FC = () => {
           </div>
           <button
             onClick={copiarCodigo}
-            className="flex items-center gap-1.5 rounded-xl bg-white dark:bg-slate-900 px-3 py-2 text-xs font-bold text-emerald-900 dark:text-emerald-100 shadow-xs active:scale-95 transition"
+            className="flex items-center gap-1.5 rounded-xl bg-[#BDD3A7] px-3 py-2 text-xs font-bold text-[#123F1B] shadow-xs hover:bg-[#90AD2E] active:scale-95 transition"
           >
             {copiado ? (
               <>
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                <CheckCircle2 className="h-4 w-4 text-[#123F1B]" />
                 Copiado
               </>
             ) : (
@@ -119,24 +113,24 @@ export const CidadaoView: React.FC = () => {
         <div className="mt-5">
           <div className="flex items-end justify-between">
             <div>
-              <span className="text-3xl font-black">{cidadaoAtivo.pontos}</span>
-              <span className="ml-1.5 text-xs font-semibold text-emerald-100">
+              <span className="text-3xl font-black text-[#90AD2E]">{cidadaoAtivo.pontos}</span>
+              <span className="ml-1.5 text-xs font-semibold text-[#BDD3A7]">
                 pontos acumulados ({cidadaoAtivo.total_kg_entregue} kg limpos)
               </span>
             </div>
-            <span className="text-xs font-bold">{progresso}%</span>
+            <span className="text-xs font-bold text-[#BDD3A7]">{progresso}%</span>
           </div>
           <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-black/25">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progresso}%` }}
               transition={{ duration: 0.6 }}
-              className="h-full rounded-full bg-white dark:bg-slate-900"
+              className="h-full rounded-full bg-[#90AD2E]"
             />
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
             <NivelBadge nivel={cidadaoAtivo.nivel} />
-            <span className="text-[11px] text-emerald-50">
+            <span className="text-[11px] text-[#BDD3A7]">
               Meta próximo marco: {infoNivel.proximo} pts
             </span>
           </div>
@@ -146,11 +140,11 @@ export const CidadaoView: React.FC = () => {
       {/* Vitrine de Vouchers */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
-            <Gift className="h-5 w-5 text-emerald-600" />
+          <h3 className="flex items-center gap-2 text-base font-bold text-[#123F1B]">
+            <Gift className="h-5 w-5 text-[#90AD2E]" />
             Vouchers & Parceiros Locais
           </h3>
-          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          <span className="text-xs font-medium text-[#8D9864]">
             {vouchersResgatados.length} resgatado(s)
           </span>
         </div>
@@ -161,8 +155,8 @@ export const CidadaoView: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             className={`rounded-2xl border p-3.5 text-xs font-semibold ${
               feedbackVoucher.ok
-                ? 'border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100'
-                : 'border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100'
+                ? 'border-[#90AD2E] bg-[#BDD3A7]/40 text-[#123F1B]'
+                : 'border-[#8D9864] bg-[#BDD3A7]/25 text-[#123F1B]'
             }`}
           >
             {feedbackVoucher.mensagem}
@@ -179,25 +173,25 @@ export const CidadaoView: React.FC = () => {
                 key={voucher.id}
                 className={`flex flex-col justify-between rounded-2xl border p-4 transition ${
                   desbloqueado
-                    ? 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xs'
-                    : 'border-slate-200/60 dark:border-slate-700/60 bg-slate-100/70 opacity-75'
+                    ? 'border-[#BDD3A7] bg-white shadow-xs'
+                    : 'border-[#BDD3A7]/50 bg-[#BDD3A7]/15 opacity-75'
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-lg bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
+                    <span className="rounded-lg bg-[#BDD3A7]/45 px-2.5 py-1 text-[11px] font-bold text-[#123F1B]">
                       {voucher.categoria}
                     </span>
-                    <span className="text-sm font-black text-emerald-600">
+                    <span className="text-sm font-black text-[#123F1B]">
                       {voucher.desconto}
                     </span>
                   </div>
-                  <h4 className="mt-2.5 font-bold text-slate-900 dark:text-slate-100">{voucher.titulo}</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">{voucher.parceiro}</p>
+                  <h4 className="mt-2.5 font-bold text-[#123F1B]">{voucher.titulo}</h4>
+                  <p className="text-xs text-[#8D9864]">{voucher.parceiro}</p>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <div className="mt-4 flex items-center justify-between border-t border-[#BDD3A7]/50 pt-3">
+                  <span className="text-xs font-bold text-[#123F1B]">
                     {voucher.custo_pontos} pts • Nível {voucher.nivel_minimo}+
                   </span>
                   <button
@@ -205,10 +199,10 @@ export const CidadaoView: React.FC = () => {
                     onClick={() => handleResgatar(voucher.id)}
                     className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition ${
                       jaResgatado
-                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-100'
+                        ? 'bg-[#BDD3A7] text-[#123F1B]'
                         : desbloqueado
-                        ? 'bg-circula-lime text-circula-dark hover:bg-[#7da01f] active:scale-95'
-                        : 'bg-slate-200 text-slate-500 dark:text-slate-400 cursor-not-allowed'
+                        ? 'bg-[#123F1B] text-white hover:bg-[#8D9864] active:scale-95'
+                        : 'bg-slate-200 text-slate-500 cursor-not-allowed'
                     }`}
                   >
                     <Ticket className="h-3.5 w-3.5" />
@@ -224,52 +218,38 @@ export const CidadaoView: React.FC = () => {
       {/* Ecopontos Ativos em Quixadá */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-slate-100">
-            <MapPin className="h-5 w-5 text-emerald-600" />
+          <h3 className="flex items-center gap-2 text-base font-bold text-[#123F1B]">
+            <MapPin className="h-5 w-5 text-[#90AD2E]" />
             Ecopontos Ativos (AMMA / CONSERCE)
           </h3>
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
-            <Sparkles className="h-3.5 w-3.5" />
-            Tempo real
-          </span>
         </div>
 
         <div className="space-y-3">
-          {ecopontos.map((eco) => {
-            const ocupacao = Math.round(
-              (eco.capacidade_atual_kg / eco.capacidade_maxima_kg) * 100
-            );
-            return (
-              <div
-                key={eco.id}
-                className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-xs"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <span className="font-mono text-xs font-bold text-emerald-700">
-                      {eco.codigo} • Bairro {eco.bairro}
-                    </span>
-                    <h4 className="font-bold text-slate-900 dark:text-slate-100">{eco.nome}</h4>
-                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{eco.endereco}</p>
-                  </div>
-                  <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
-                    {ocupacao}% ocupado
-                  </span>
-                </div>
-
-                <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-                  <span className="inline-flex items-center gap-1">
-                    <Clock className="h-3.5 w-3.5 text-slate-400" />
-                    {eco.horario}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
-                    <Recycle className="h-3.5 w-3.5 text-emerald-600" />
-                    {eco.materiais_aceitos.slice(0, 3).join(', ')}...
-                  </span>
-                </div>
+          {ecopontos.map((eco) => (
+            <div
+              key={eco.id}
+              className="rounded-2xl border border-[#BDD3A7] bg-white p-4 shadow-xs"
+            >
+              <div>
+                <span className="font-mono text-xs font-bold text-[#8D9864]">
+                  {eco.codigo} • Bairro {eco.bairro}
+                </span>
+                <h4 className="font-bold text-[#123F1B]">{eco.nome}</h4>
+                <p className="mt-0.5 text-xs text-[#8D9864]">{eco.endereco}</p>
               </div>
-            );
-          })}
+
+              <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-[#123F1B]">
+                <span className="inline-flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5 text-[#8D9864]" />
+                  {eco.horario}
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <Recycle className="h-3.5 w-3.5 text-[#90AD2E]" />
+                  {eco.materiais_aceitos.slice(0, 3).join(', ')}...
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>

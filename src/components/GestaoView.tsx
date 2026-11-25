@@ -2,32 +2,22 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Building2,
-  Flame,
-  Landmark,
   MapPinPlus,
-  Scale,
-  TrendingDown,
   Trophy,
 } from 'lucide-react';
 import { useCircula } from '../lib/circulaStore';
 import { NivelBadge } from './ui/Badges';
 
 export const GestaoView: React.FC = () => {
-  const { ecopontos, depositos, cidadaos, cadastrarEcoponto, modoSupabase } = useCircula();
+  const { ecopontos, cidadaos, cadastrarEcoponto } = useCircula();
 
   const [nome, setNome] = useState('');
   const [bairro, setBairro] = useState('');
   const [endereco, setEndereco] = useState('');
-  const [horario, setHorario] = useState('Seg a Sáb • 07h às 17h');
+  const [horario] = useState('Seg a Sáb • 07h às 17h');
   const [capacidade, setCapacidade] = useState('500');
   const [feedback, setFeedback] = useState<{ ok: boolean; mensagem: string } | null>(null);
   const [enviando, setEnviando] = useState(false);
-
-  const totalKgDesviado = depositos.reduce((acc, d) => acc + d.peso_kg, 0);
-  const economiaPppTotal = depositos.reduce((acc, d) => acc + d.economia_ppp_brl, 0);
-  const cobreMetaisKg = depositos
-    .filter((d) => ['Cobre/Fios', 'Metais', 'Eletrônicos'].includes(d.categoria_material))
-    .reduce((acc, d) => acc + d.peso_kg, 0);
 
   const rankingCidadaos = [...cidadaos].sort((a, b) => b.pontos - a.pontos);
 
@@ -65,64 +55,6 @@ export const GestaoView: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-24">
-      {/* Cabeçalho Institucional AMMA / CONSERCE */}
-      <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 p-6 text-white shadow-lg">
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-bold text-emerald-300">
-              <Landmark className="h-3.5 w-3.5" />
-              Painel AMMA / CONSERCE • Quixadá
-            </span>
-            <h2 className="mt-2 text-xl font-bold">Gestão Pública & Impacto PPP</h2>
-          </div>
-          <span
-            className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${
-              modoSupabase
-                ? 'bg-emerald-500/20 text-emerald-300'
-                : 'bg-amber-500/20 text-amber-200'
-            }`}
-          >
-            {modoSupabase ? 'Supabase Realtime ON' : 'Modo Demo Local'}
-          </span>
-        </div>
-
-        {/* KPIs Estratégicos */}
-        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl bg-white/10 p-4">
-            <div className="flex items-center gap-2 text-xs text-slate-300">
-              <Scale className="h-4 w-4 text-emerald-400" />
-              Desviado da Usina PPP
-            </div>
-            <p className="mt-1.5 text-2xl font-black text-white">
-              {totalKgDesviado.toFixed(1)} kg
-            </p>
-            <span className="text-[11px] text-emerald-300">100% triado na fonte</span>
-          </div>
-
-          <div className="rounded-2xl bg-white/10 p-4">
-            <div className="flex items-center gap-2 text-xs text-slate-300">
-              <TrendingDown className="h-4 w-4 text-emerald-400" />
-              Economia Cofres Públicos
-            </div>
-            <p className="mt-1.5 text-2xl font-black text-emerald-400">
-              R$ {economiaPppTotal.toFixed(2)}
-            </p>
-            <span className="text-[11px] text-slate-300">Redução de custo de aterro/PPP</span>
-          </div>
-
-          <div className="rounded-2xl bg-white/10 p-4">
-            <div className="flex items-center gap-2 text-xs text-slate-300">
-              <Flame className="h-4 w-4 text-amber-400" />
-              Metais & Cobre Sem Queima
-            </div>
-            <p className="mt-1.5 text-2xl font-black text-amber-300">
-              {cobreMetaisKg.toFixed(1)} kg
-            </p>
-            <span className="text-[11px] text-slate-300">Zero emissão tóxica</span>
-          </div>
-        </div>
-      </div>
-
       {/* Cadastro e Ativação de Novo Ecoponto */}
       <form
         onSubmit={handleCriarEcoponto}

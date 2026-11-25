@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CatadorRouteImport } from './routes/catador'
 import { Route as CidadaoRouteImport } from './routes/cidadao'
+import { Route as EcopontosRouteImport } from './routes/ecopontos'
 import { Route as GestaoRouteImport } from './routes/gestao'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const CidadaoRoute = CidadaoRouteImport.update({
   path: '/cidadao',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EcopontosRoute = EcopontosRouteImport.update({
+  id: '/ecopontos',
+  path: '/ecopontos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GestaoRoute = GestaoRouteImport.update({
   id: '/gestao',
   path: '/gestao',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/catador': typeof CatadorRoute
   '/cidadao': typeof CidadaoRoute
+  '/ecopontos': typeof EcopontosRoute
   '/gestao': typeof GestaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/catador': typeof CatadorRoute
   '/cidadao': typeof CidadaoRoute
+  '/ecopontos': typeof EcopontosRoute
   '/gestao': typeof GestaoRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/catador': typeof CatadorRoute
   '/cidadao': typeof CidadaoRoute
+  '/ecopontos': typeof EcopontosRoute
   '/gestao': typeof GestaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/catador' | '/cidadao' | '/gestao'
+  fullPaths: '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/catador' | '/cidadao' | '/gestao'
-  id: '__root__' | '/' | '/catador' | '/cidadao' | '/gestao'
+  to: '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao'
+  id: '__root__' | '/' | '/catador' | '/cidadao' | '/ecopontos' | '/gestao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CatadorRoute: typeof CatadorRoute
   CidadaoRoute: typeof CidadaoRoute
+  EcopontosRoute: typeof EcopontosRoute
   GestaoRoute: typeof GestaoRoute
 }
 
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CidadaoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ecopontos': {
+      id: '/ecopontos'
+      path: '/ecopontos'
+      fullPath: '/ecopontos'
+      preLoaderRoute: typeof EcopontosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gestao': {
       id: '/gestao'
       path: '/gestao'
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CatadorRoute: CatadorRoute,
   CidadaoRoute: CidadaoRoute,
+  EcopontosRoute: EcopontosRoute,
   GestaoRoute: GestaoRoute,
 }
 export const routeTree = rootRouteImport
