@@ -19,12 +19,6 @@ const TOTAL_COLETA = ITENS_COLETA.reduce(
 );
 const PCT = Math.round((DEMO.pontos / DEMO.meta) * 100);
 
-const VITRINES: Array<[string, string]> = [
-  ["Dia a dia", "mercados, cafeterias, restaurantes, farmácias"],
-  ["Cultura, educação e lazer", "cinema, teatro, cursos"],
-  ["IPTU Verde, mobilidade e VIP", "desconto no IPTU, Uber e super vouchers"],
-];
-
 export const FLOW: Record<string, FlowNode> = {
   start: {
     bot: [
@@ -239,8 +233,8 @@ export const FLOW: Record<string, FlowNode> = {
         desconto no Supermercado Pinheiro.
       </>,
     ],
-    replies: ["Aceitar desafio", "Ver vantagens"],
-    next: { "Aceitar desafio": "desafio_ok", "Ver vantagens": "vantagens" },
+    replies: ["Aceitar desafio"],
+    next: { "Aceitar desafio": "desafio_ok" },
   },
   desafio_ok: {
     bot: [
@@ -248,35 +242,6 @@ export const FLOW: Record<string, FlowNode> = {
         Desafio <strong>aceito</strong>! Complete a coleta com 3 categorias
         limpas em até 24h e o bônus de <strong>+450 pts</strong> cai na sua
         carteira automaticamente.
-      </>,
-    ],
-    replies: ["Ver vantagens"],
-    next: "vantagens",
-  },
-  vantagens: {
-    bot: [
-      <>
-        Escolha uma vitrine:
-        {VITRINES.map(([titulo, desc]) => (
-          <div
-            key={titulo}
-            style={{
-              background: "#F1F5EC",
-              borderRadius: 10,
-              padding: "9px 12px",
-              marginTop: 5,
-              fontWeight: 700,
-              fontSize: 14,
-              color: "#123F23",
-            }}
-          >
-            {titulo}
-            <br />
-            <span style={{ fontWeight: 600, fontSize: 12, color: "#5F6F5A" }}>
-              {desc}
-            </span>
-          </div>
-        ))}
       </>,
     ],
     replies: ["Começar de novo"],
