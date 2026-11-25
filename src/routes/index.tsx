@@ -37,12 +37,11 @@ import {
   Utensils,
   X,
 } from 'lucide-react';
+import type { Nivel as NivelJornada } from '../types/database';
 
 export const Route = createFileRoute('/')({
   component: HomeLanding,
 });
-
-type NivelJornada = 1 | 2 | 3 | 4 | 5;
 
 interface CupomCarrossel {
   id: string;
@@ -62,11 +61,11 @@ const NIVEIS_INFO: Record<
   NivelJornada,
   { nome: string; cor: string; icon: React.ElementType }
 > = {
-  1: { nome: 'Nível 1 • Semente', cor: 'bg-emerald-100 text-emerald-800', icon: Sprout },
-  2: { nome: 'Nível 2 • Broto', cor: 'bg-teal-100 text-teal-800', icon: Leaf },
-  3: { nome: 'Nível 3 • Árvore', cor: 'bg-sky-100 text-sky-800', icon: TreePine },
-  4: { nome: 'Nível 4 • Guardião', cor: 'bg-indigo-100 text-indigo-800', icon: ShieldCheck },
-  5: { nome: 'Nível 5 • Embaixador', cor: 'bg-amber-100 text-amber-900', icon: Award },
+  1: { nome: 'Nível 1 • Semente', cor: 'bg-circula-sage/40 text-circula-dark dark:bg-circula-lime/15 dark:text-circula-sage', icon: Sprout },
+  2: { nome: 'Nível 2 • Broto', cor: 'bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-100', icon: Leaf },
+  3: { nome: 'Nível 3 • Árvore', cor: 'bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-100', icon: TreePine },
+  4: { nome: 'Nível 4 • Guardião', cor: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-100', icon: ShieldCheck },
+  5: { nome: 'Nível 5 • Embaixador', cor: 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100', icon: Award },
 };
 
 const CUPONS_CARROSSEL: CupomCarrossel[] = [
@@ -397,10 +396,10 @@ const LinhaCarrossel: React.FC<LinhaCarrosselProps> = ({
       {/* Cabeçalho da Linha */}
       <div className="flex items-center justify-between gap-2 px-0.5">
         <div>
-          <h3 className="text-xs sm:text-sm font-extrabold text-slate-900">
+          <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-slate-100">
             {tituloLinha}
           </h3>
-          <p className="text-[11px] text-slate-500">{subtituloLinha}</p>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">{subtituloLinha}</p>
         </div>
 
         <div className="flex items-center gap-1">
@@ -408,7 +407,7 @@ const LinhaCarrossel: React.FC<LinhaCarrosselProps> = ({
             type="button"
             onClick={() => rolar('esquerda')}
             aria-label="Anterior"
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition"
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 hover:text-emerald-700 transition"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -416,7 +415,7 @@ const LinhaCarrossel: React.FC<LinhaCarrosselProps> = ({
             type="button"
             onClick={() => rolar('direita')}
             aria-label="Próximo"
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition"
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 hover:text-emerald-700 transition"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -440,7 +439,7 @@ const LinhaCarrossel: React.FC<LinhaCarrosselProps> = ({
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onSelectCupom(cupom)}
-              className="group relative w-[205px] shrink-0 snap-start cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs transition hover:border-emerald-400 hover:shadow-md flex flex-col justify-between"
+              className="group relative w-[205px] shrink-0 snap-start cursor-pointer overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xs transition hover:border-emerald-400 hover:shadow-md flex flex-col justify-between"
             >
               {/* Topo Colorido */}
               <div className={`bg-gradient-to-r ${cupom.gradiente} p-3 text-white`}>
@@ -461,15 +460,15 @@ const LinhaCarrossel: React.FC<LinhaCarrosselProps> = ({
               </div>
 
               {/* Picote de Ticket */}
-              <div className="relative flex items-center justify-between bg-white">
-                <span className="-ml-1.5 h-3 w-3 rounded-full border border-slate-200 bg-slate-50" />
-                <div className="w-full border-t border-dashed border-slate-300" />
-                <span className="-mr-1.5 h-3 w-3 rounded-full border border-slate-200 bg-slate-50" />
+              <div className="relative flex items-center justify-between bg-white dark:bg-slate-900">
+                <span className="-ml-1.5 h-3 w-3 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800" />
+                <div className="w-full border-t border-dashed border-slate-300 dark:border-slate-600" />
+                <span className="-mr-1.5 h-3 w-3 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800" />
               </div>
 
               {/* Base do Bloquinho */}
               <div className="flex flex-1 flex-col justify-between p-3 pt-1.5">
-                <p className="text-[11px] font-bold text-slate-800 truncate">
+                <p className="text-[11px] font-bold text-slate-800 dark:text-slate-100 truncate">
                   {cupom.parceiro}
                 </p>
 
@@ -506,7 +505,7 @@ function HomeLanding() {
       titulo: 'Sou Cidadão',
       subtitulo: 'Código de entrega, Níveis de Confiança, Ecopontos e resgate de cupons.',
       icon: User,
-      cor: 'bg-emerald-600 text-white',
+      cor: 'bg-circula-lime text-circula-dark',
     },
     {
       to: '/catador',
@@ -547,20 +546,20 @@ function HomeLanding() {
       </motion.section>
 
       {/* PAINEL COM 3 LINHAS DE CARROSSEL DE CUPONS */}
-      <section className="rounded-3xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-sm space-y-5">
+      <section className="rounded-3xl border border-slate-200/90 dark:border-slate-700/90 bg-white dark:bg-slate-900 p-4 sm:p-5 shadow-sm space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
             <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700">
               <Sparkles className="h-3.5 w-3.5" />
               Vitrine de Recompensas • 5 Níveis
             </span>
-            <h2 className="text-base sm:text-lg font-black text-slate-900">
+            <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">
               Cupons, IPTU Verde & Benefícios Parceiros
             </h2>
           </div>
           <Link
             to="/cidadao"
-            className="rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-extrabold text-white shadow-xs hover:bg-emerald-700 transition"
+            className="rounded-xl bg-circula-lime px-3.5 py-2 text-xs font-extrabold text-circula-dark shadow-xs hover:bg-[#7da01f] transition"
           >
             Minha Carteira
           </Link>
@@ -597,9 +596,9 @@ function HomeLanding() {
         />
 
         {/* Rodapé Informativo */}
-        <div className="flex items-center justify-between rounded-2xl bg-emerald-50/80 px-3.5 py-2.5 border border-emerald-200/70">
-          <div className="flex items-center gap-2 text-xs text-emerald-900">
-            <Gift className="h-4 w-4 text-emerald-600 shrink-0" />
+        <div className="flex items-center justify-between rounded-2xl bg-emerald-50/80 px-3.5 py-2.5 border border-emerald-200/70 dark:bg-circula-lime/10 dark:border-circula-lime/30">
+          <div className="flex items-center gap-2 text-xs text-emerald-900 dark:text-circula-sage">
+            <Gift className="h-4 w-4 text-emerald-600 dark:text-circula-lime shrink-0" />
             <span>
               Toque em qualquer bloquinho para conferir as regras e o nível necessário.
             </span>
@@ -622,7 +621,7 @@ function HomeLanding() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.92, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl"
+              className="w-full max-w-sm overflow-hidden rounded-3xl bg-white dark:bg-slate-900 shadow-2xl"
             >
               <div
                 className={`bg-gradient-to-r ${cupomSelecionado.gradiente} p-5 text-white relative`}
@@ -648,20 +647,20 @@ function HomeLanding() {
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                     Parceiro / Órgão Responsável
                   </span>
-                  <p className="text-sm font-extrabold text-slate-900">
+                  <p className="text-sm font-extrabold text-slate-900 dark:text-slate-100">
                     {cupomSelecionado.parceiro}
                   </p>
-                  <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
+                  <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                     {cupomSelecionado.descricao}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between rounded-2xl bg-slate-50 p-3 border border-slate-200/80">
+                <div className="flex items-center justify-between rounded-2xl bg-slate-50 dark:bg-slate-800 p-3 border border-slate-200/80 dark:border-slate-700/80">
                   <div>
                     <span className="block text-[10px] font-bold uppercase text-slate-400">
                       Requisito da Jornada
                     </span>
-                    <span className="text-xs font-extrabold text-slate-800">
+                    <span className="text-xs font-extrabold text-slate-800 dark:text-slate-100">
                       {NIVEIS_INFO[cupomSelecionado.nivel].nome}
                     </span>
                   </div>
@@ -678,7 +677,7 @@ function HomeLanding() {
                 <Link
                   to="/cidadao"
                   onClick={() => setCupomSelecionado(null)}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3 text-sm font-extrabold text-white hover:bg-emerald-700 transition"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-circula-lime py-3 text-sm font-extrabold text-circula-dark hover:bg-[#7da01f] transition"
                 >
                   <Ticket className="h-4 w-4" />
                   Ir para Carteira e Resgatar
@@ -691,7 +690,7 @@ function HomeLanding() {
 
       {/* Seleção de Módulos do Sistema */}
       <section className="space-y-3">
-        <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+        <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Selecione o módulo de acesso
         </h2>
 
@@ -702,17 +701,17 @@ function HomeLanding() {
               <Link
                 key={p.to}
                 to={p.to}
-                className="group flex items-center justify-between gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-xs transition hover:border-emerald-400 hover:shadow-md"
+                className="group flex items-center justify-between gap-4 rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-xs transition hover:border-emerald-400 hover:shadow-md"
               >
                 <div className="flex items-start gap-4">
                   <div className={`rounded-2xl p-3.5 ${p.cor}`}>
                     <Icon className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="text-base font-extrabold text-slate-900 group-hover:text-emerald-700">
+                    <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-emerald-700">
                       {p.titulo}
                     </h3>
-                    <p className="mt-1 text-xs text-slate-600 leading-relaxed">
+                    <p className="mt-1 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                       {p.subtitulo}
                     </p>
                   </div>
@@ -725,7 +724,7 @@ function HomeLanding() {
       </section>
 
       {/* Rodapé LGPD */}
-      <div className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-xs text-slate-600">
+      <div className="flex items-start gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 text-xs text-slate-600 dark:text-slate-300">
         <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-600" />
         <p>
           <strong>Conformidade LGPD (Lei nº 13.709/2018):</strong> Este protótipo utiliza

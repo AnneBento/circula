@@ -27,7 +27,7 @@ create table if not exists public.cidadaos (
   nome_ficticio text not null,
   bairro text not null,
   pontos integer not null default 0,
-  nivel integer not null default 1 check (nivel between 1 and 3),
+  nivel integer not null default 1 check (nivel between 1 and 5),
   total_kg_entregue numeric(10,2) not null default 0,
   created_at timestamptz not null default now()
 );
@@ -56,16 +56,36 @@ create table if not exists public.vouchers (
   parceiro text not null,
   categoria text not null check (categoria in ('Educação', 'Entretenimento', 'Comércio Local')),
   desconto text not null,
-  nivel_minimo integer not null default 1 check (nivel_minimo between 1 and 3),
+  nivel_minimo integer not null default 1 check (nivel_minimo between 1 and 5),
   custo_pontos integer not null default 100,
   ativo boolean not null default true
 );
+
+-- 5. Resgates de Vouchers por Cidadão (carteira persistida)
+create table if not exists public.resgates_vouchers (
+  id uuid primary key default uuid_generate_v4(),
+  cidadao_id uuid not null references public.cidadaos(id) on delete cascade,
+  voucher_id uuid not null references public.vouchers(id) on delete cascade,
+  custo_pontos integer not null,
+  created_at timestamptz not null default now(),
+  unique (cidadao_id, voucher_id)
+);
+
+-- Migração para bancos já criados com a escala antiga de 3 níveis (idempotente)
+alter table public.cidadaos
+  drop constraint if exists cidadaos_nivel_check,
+  add constraint cidadaos_nivel_check check (nivel between 1 and 5);
+
+alter table public.vouchers
+  drop constraint if exists vouchers_nivel_minimo_check,
+  add constraint vouchers_nivel_minimo_check check (nivel_minimo between 1 and 5);
 
 -- Habilitar Row Level Security (RLS) com políticas abertas para demonstração do MVP
 alter table public.ecopontos enable row level security;
 alter table public.cidadaos enable row level security;
 alter table public.depositos enable row level security;
 alter table public.vouchers enable row level security;
+alter table public.resgates_vouchers enable row level security;
 
 create policy "Leitura publica ecopontos" on public.ecopontos for select using (true);
 create policy "Insercao ecopontos gestao" on public.ecopontos for insert with check (true);
@@ -79,10 +99,14 @@ create policy "Insercao depositos catador" on public.depositos for insert with c
 
 create policy "Leitura publica vouchers" on public.vouchers for select using (true);
 
+create policy "Leitura publica resgates_vouchers" on public.resgates_vouchers for select using (true);
+create policy "Insercao resgates_vouchers" on public.resgates_vouchers for insert with check (true);
+
 -- Habilitar Realtime
 alter publication supabase_realtime add table public.ecopontos;
 alter publication supabase_realtime add table public.cidadaos;
 alter publication supabase_realtime add table public.depositos;
+alter publication supabase_realtime add table public.resgates_vouchers;
 
 -- Dados iniciais sintéticos (Quixadá/CE)
 insert into public.ecopontos (codigo, nome, bairro, endereco, horario, capacidade_atual_kg, capacidade_maxima_kg) values
@@ -93,12 +117,17 @@ on conflict (codigo) do nothing;
 
 insert into public.cidadaos (codigo_entrega, nome_ficticio, bairro, pontos, nivel, total_kg_entregue) values
   ('QXD-2026', 'Mariana Silva (Demo)', 'Centro', 420, 2, 18.5),
-  ('QXD-8841', 'Carlos Eduardo (Demo)', 'Campo Novo', 980, 3, 44.0)
+  ('QXD-8841', 'Carlos Eduardo (Demo)', 'Campo Novo', 980, 4, 44.0)
 on conflict (codigo_entrega) do nothing;
 
 insert into public.vouchers (titulo, parceiro, categoria, desconto, nivel_minimo, custo_pontos) values
   ('15% OFF em Livros e Papelaria', 'Livraria Monólitos', 'Comércio Local', '15% OFF', 1, 100),
   ('Ingresso Meia-Entrada Cultural', 'Cine Teatro Quixadá', 'Entretenimento', '50% OFF', 2, 250),
   ('Bolsa 30% Curso Técnico & TI', 'Instituto Educa Sertão', 'Educação', '30% OFF', 2, 300),
-  ('Vale-Feira Produtos Regionais', 'Associação Feira Limpa', 'Comércio Local', 'R$ 25,00', 3, 500)
+  ('Vale-Feira Produtos Regionais', 'Associação Feira Limpa', 'Comércio Local', 'R$ 25,00', 3, 500),
+  ('IPTU Verde Residencial', 'Prefeitura de Quixadá • AMMA', 'Comércio Local', '30% OFF', 4, 750),
+  ('Viagem Grátis no Uber', 'Crédito Uber / Mobilidade Urbana', 'Entretenimento', 'R$ 20,00', 5, 850)
 on conflict do nothing;
+
+-- Alinha o cidadão demo com a nova escala de 5 níveis (executa só se ainda estiver no nível antigo)
+update public.cidadaos set nivel = 4 where codigo_entrega = 'QXD-8841' and nivel = 3;
