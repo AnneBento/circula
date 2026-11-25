@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  CheckCircle2,
+  Camera,
   Clock,
-  Copy,
   Gift,
+  ImagePlus,
   MapPin,
   Recycle,
   Ticket,
+  X,
 } from 'lucide-react';
 import { useCircula } from '../lib/circulaStore';
 import { getInfoNivel } from '../types/database';
@@ -24,7 +25,7 @@ export const CidadaoView: React.FC = () => {
     resgatarVoucher,
   } = useCircula();
 
-  const [copiado, setCopiado] = useState(false);
+  const [fotoMaterial, setFotoMaterial] = useState<string | null>(null);
   const [feedbackVoucher, setFeedbackVoucher] = useState<{
     ok: boolean;
     mensagem: string;
@@ -33,10 +34,23 @@ export const CidadaoView: React.FC = () => {
   const infoNivel = getInfoNivel(cidadaoAtivo.nivel);
   const progresso = Math.min(100, Math.round((cidadaoAtivo.pontos / infoNivel.proximo) * 100));
 
-  const copiarCodigo = () => {
-    navigator.clipboard?.writeText(cidadaoAtivo.codigo_entrega);
-    setCopiado(true);
-    setTimeout(() => setCopiado(false), 2000);
+  useEffect(() => {
+    return () => {
+      if (fotoMaterial) URL.revokeObjectURL(fotoMaterial);
+    };
+  }, [fotoMaterial]);
+
+  const handleFotoMaterial = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (fotoMaterial) URL.revokeObjectURL(fotoMaterial);
+    setFotoMaterial(URL.createObjectURL(file));
+    e.target.value = '';
+  };
+
+  const removerFotoMaterial = () => {
+    if (fotoMaterial) URL.revokeObjectURL(fotoMaterial);
+    setFotoMaterial(null);
   };
 
   const handleResgatar = async (id: string) => {
@@ -53,14 +67,14 @@ export const CidadaoView: React.FC = () => {
           {cidadaos.map((c) => (
             <button
               key={c.id}
-              onClick={() => selecionarCidadao(c.codigo_entrega)}
+              onClick={() => selecionarCidadao(c.id)}
               className={`rounded-xl px-2.5 py-1 text-xs font-semibold transition ${
-                c.codigo_entrega === cidadaoAtivo.codigo_entrega
+                c.id === cidadaoAtivo.id
                   ? 'bg-[#123F1B] text-white shadow-xs'
                   : 'bg-[#BDD3A7]/35 text-[#123F1B] hover:bg-[#BDD3A7]/60'
               }`}
             >
-              {c.codigo_entrega}
+              {c.nome_ficticio.split(' ')[0]}
             </button>
           ))}
         </div>
@@ -80,32 +94,45 @@ export const CidadaoView: React.FC = () => {
           <p className="text-xs text-[#BDD3A7]/90">Bairro {cidadaoAtivo.bairro}</p>
         </div>
 
-        {/* Código de Entrega Rápido */}
-        <div className="mt-5 flex items-center justify-between rounded-2xl bg-black/25 px-4 py-3 backdrop-blur-xs border border-[#BDD3A7]/20">
-          <div>
-            <span className="block text-[11px] uppercase tracking-wider text-[#BDD3A7]">
-              Código de Entrega no Ecoponto
-            </span>
-            <span className="font-mono text-2xl font-black tracking-widest">
-              {cidadaoAtivo.codigo_entrega}
-            </span>
+        {/* Foto do material para pré-entrega */}
+        <div className="mt-5 rounded-2xl bg-black/25 px-4 py-3 backdrop-blur-xs border border-[#BDD3A7]/20">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <span className="block text-[11px] uppercase tracking-wider text-[#BDD3A7]">
+                Foto do material para entrega
+              </span>
+              <span className="mt-1 block text-xs text-[#BDD3A7]/90">
+                Registre os recicláveis limpos antes de levar ao ecoponto.
+              </span>
+            </div>
+            {fotoMaterial ? (
+              <button
+                type="button"
+                onClick={removerFotoMaterial}
+                className="inline-flex items-center gap-1 rounded-xl bg-black/20 px-2.5 py-2 text-[11px] font-bold text-[#BDD3A7] hover:bg-black/30 transition"
+              >
+                <X className="h-3.5 w-3.5" /> Remover
+              </button>
+            ) : null}
           </div>
-          <button
-            onClick={copiarCodigo}
-            className="flex items-center gap-1.5 rounded-xl bg-[#BDD3A7] px-3 py-2 text-xs font-bold text-[#123F1B] shadow-xs hover:bg-[#90AD2E] active:scale-95 transition"
-          >
-            {copiado ? (
-              <>
-                <CheckCircle2 className="h-4 w-4 text-[#123F1B]" />
-                Copiado
-              </>
-            ) : (
-              <>
-                <Copy className="h-4 w-4" />
-                Copiar
-              </>
-            )}
-          </button>
+
+          {fotoMaterial ? (
+            <div className="mt-3 overflow-hidden rounded-xl border border-[#BDD3A7]/20">
+              <img src={fotoMaterial} alt="Prévia do material para entrega" className="h-36 w-full object-cover" />
+            </div>
+          ) : (
+            <label className="mt-3 flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-[#BDD3A7]/40 bg-black/10 px-3 py-4 text-xs font-bold text-[#BDD3A7] hover:bg-black/20 transition">
+              <Camera className="h-4 w-4" />
+              <span>Adicionar foto</span>
+              <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFotoMaterial} />
+            </label>
+          )}
+          {fotoMaterial ? (
+            <label className="mt-2 inline-flex cursor-pointer items-center gap-1.5 text-[11px] font-semibold text-[#90AD2E] hover:underline">
+              <ImagePlus className="h-3.5 w-3.5" /> Trocar foto
+              <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFotoMaterial} />
+            </label>
+          ) : null}
         </div>
 
         {/* Pontuação e Barra de Nível */}

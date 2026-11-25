@@ -174,7 +174,7 @@ interface CirculaContextType {
   ecopontos: Ecoponto[];
   cidadaos: Cidadao[];
   cidadaoAtivo: Cidadao;
-  selecionarCidadao: (codigo: string) => void;
+  selecionarCidadao: (id: string) => void;
   depositos: Deposito[];
   vouchers: Voucher[];
   vouchersResgatados: string[];
@@ -212,7 +212,7 @@ function proximoCodigoEcoponto(ecopontos: Ecoponto[], reservado: Set<string> = n
 export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [ecopontos, setEcopontos] = useState<Ecoponto[]>(INITIAL_ECOPONTOS);
   const [cidadaos, setCidadaos] = useState<Cidadao[]>(INITIAL_CIDADAOS);
-  const [codigoAtivo, setCodigoAtivo] = useState<string>('QXD-2026');
+  const [cidadaoAtivoId, setCidadaoAtivoId] = useState<string>('cid-1');
   const [depositos, setDepositos] = useState<Deposito[]>(INITIAL_DEPOSITOS);
   const [vouchers, setVouchers] = useState<Voucher[]>(INITIAL_VOUCHERS);
   const [resgates, setResgates] = useState<ResgateVoucher[]>([]);
@@ -280,14 +280,14 @@ export const CirculaProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []);
 
   const cidadaoAtivo =
-    cidadaos.find((c) => c.codigo_entrega === codigoAtivo) || cidadaos[0];
+    cidadaos.find((c) => c.id === cidadaoAtivoId) || cidadaos[0];
 
   const vouchersResgatados = resgates
     .filter((r) => r.cidadao_id === cidadaoAtivo?.id)
     .map((r) => r.voucher_id);
 
-  const selecionarCidadao = (codigo: string) => {
-    setCodigoAtivo(codigo);
+  const selecionarCidadao = (id: string) => {
+    setCidadaoAtivoId(id);
   };
 
   const resgatarVoucher = async (voucherId: string) => {

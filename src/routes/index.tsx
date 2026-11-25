@@ -647,7 +647,7 @@ function HomeLanding() {
     {
       to: '/cidadao',
       titulo: 'Sou Cidadão',
-      subtitulo: 'Código de entrega, Níveis de Confiança, Ecopontos e resgate de cupons.',
+      subtitulo: 'Foto do material, Níveis de Confiança, Ecopontos e resgate de cupons.',
       icon: User,
       cor: 'bg-[#123F1B] text-[#BDD3A7]',
     },
